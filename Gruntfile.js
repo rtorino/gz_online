@@ -56,12 +56,12 @@ module.exports = function( grunt ) {
 				}
 			}
 			/* not used at the moment
-            handlebars: {
-                files: [
-                    '<%= yeoman.app %>/templates/*.hbs'
-                ],
-                tasks: ['handlebars']
-            }*/
+			handlebars: {
+				files: [
+					'<%= yeoman.app %>/templates/*.hbs'
+				],
+				tasks: ['handlebars']
+			}*/
 		},
 
 		// testing server
@@ -79,6 +79,20 @@ module.exports = function( grunt ) {
 			mocha: {
 				command: 'mocha-phantomjs http://localhost:<%= connect.testserver.options.port %>/test/public',
 				stdout: true
+			}
+		},
+
+		simplemocha: {
+			options: {
+				globals: ['should'],
+				timeout: 3000,
+				ignoreLeaks: true,
+				ui: 'bdd',
+				reporter: 'spec'
+			},
+
+			all: { 
+				src: ['test/server/**/*.js'] 
 			}
 		},
 
@@ -155,14 +169,14 @@ module.exports = function( grunt ) {
 
 		// lesscss
 		less: {
-            compile : {
-    			options: {
-    				ieCompat: true
-    			},
-    			files: {
-                    '.tmp/styles/main.css': [ '<%= yeoman.app %>/styles/main.less' ]
-                }
-            }
+			compile : {
+				options: {
+					ieCompat: true
+				},
+				files: {
+					'.tmp/styles/main.css': [ '<%= yeoman.app %>/styles/main.less' ]
+				}
+			}
 		},
 
 		// require
@@ -239,14 +253,14 @@ module.exports = function( grunt ) {
 			dist: {
 				options: {
 					/*removeCommentsFromCDATA: true,
-                    // https://github.com/yeoman/grunt-usemin/issues/44
-                    //collapseWhitespace: true,
-                    collapseBooleanAttributes: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    useShortDoctype: true,
-                    removeEmptyAttributes: true,
-                    removeOptionalTags: true*/
+					// https://github.com/yeoman/grunt-usemin/issues/44
+					//collapseWhitespace: true,
+					collapseBooleanAttributes: true,
+					removeAttributeQuotes: true,
+					removeRedundantAttributes: true,
+					useShortDoctype: true,
+					removeEmptyAttributes: true,
+					removeOptionalTags: true*/
 				},
 				files: [ {
 					expand: true,
@@ -326,7 +340,8 @@ module.exports = function( grunt ) {
 		'handlebars',
 		'less',
 		'connect:testserver',
-		'exec:mocha'
+		'exec:mocha',
+		'simplemocha'
 	] );
 
 	grunt.registerTask( 'build', [
