@@ -8,12 +8,11 @@ var hbs = require( 'express-hbs' );
 var baucis = require( 'baucis' );
 
 var mongoose = require( 'mongoose' );
-var config = require( './config' );
+var config = require( './config' ).configs;
+var mongoURL = require( './config' ).mongoURL;
 
 // start mongoose
-mongoose.connect( config.store( {
-	db: 'sit'
-} ) );
+mongoose.connect( mongoURL( config.server.mongodb ) );
 
 var db = mongoose.connection;
 
@@ -21,8 +20,8 @@ db.on( 'error', console.error.bind( console, 'connection error:' ) );
 db.once( 'open', function callback() {
 
 	// REST Controllers
-	require('./controllers/TestController')(baucis);
-	require('./controllers/UserController')(baucis);
+	require( './controllers/TestController' )( baucis );
+	require( './controllers/UserController' )( baucis );
 
 	var app = express();
 
@@ -33,7 +32,9 @@ db.once( 'open', function callback() {
 		app.set( 'views', __dirname + '../app/scripts/views' );
 	} );
 
-	app.use( '/api/v1', baucis( { swagger: true } ) );
+	app.use( config.server.rest, baucis( {
+		swagger: true
+	} ) );
 
 	// simple log
 	app.use( function( req, res, next ) {

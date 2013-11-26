@@ -9,5 +9,3 @@ function loadJSON( model ) {
 exports.mongoExport = function() {
 
 }
-
-exports.baseUrl = '/api/v1';

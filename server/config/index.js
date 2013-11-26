@@ -1,12 +1,18 @@
-module.exports = {
+exports.configs = {
 	'server': {
-		'port': 9000
-	},
-	'store': generate_mongo_url
+		'port': 9000,
+		'host': '127.0.0.1',
+		'rest': '/api/v1',
+		'mongodb': {
+			'hostname': 'localhost',
+			'port': 27017,
+			'db': 'gz'
+		}
+	}
 }
 
 // Helper function for generating mongodb configs
-function generate_mongo_url( obj ) {
+exports.mongoURL = function( obj ) {
 	obj.hostname = ( obj.hostname || 'localhost' );
 	obj.port = ( obj.port || 'port' );
 	obj.db = ( obj.db || 'sample_development' );
