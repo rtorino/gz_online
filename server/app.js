@@ -22,7 +22,7 @@ db.once( 'open', function callback() {
 
 	// REST Controllers
 	require('./controllers/TestController')(baucis);
-	require('./controllers/UsersController')(baucis);
+	require('./controllers/UserController')(baucis);
 
 	var app = express();
 

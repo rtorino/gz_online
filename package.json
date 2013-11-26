@@ -39,7 +39,8 @@
     "grunt-contrib-watch": "~0.4.4",
     "time-grunt": "~0.1.1",
     "grunt-contrib-less": "~0.8.2",
-    "grunt-simple-mocha": "~0.4.0"
+    "grunt-simple-mocha": "~0.4.0",
+    "supertest": "~0.8.1"
   },
   "engines": {
     "node": ">=0.8.0"
