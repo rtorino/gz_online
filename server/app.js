@@ -12,7 +12,7 @@ var config = require( './config' ).configs;
 var mongoURL = require( './config' ).mongoURL;
 
 // start mongoose
-mongoose.connect( mongoURL( config.server.mongodb ) );
+mongoose.connect( mongoURL( config.mongodb ) );
 
 var db = mongoose.connection;
 
@@ -26,13 +26,13 @@ db.once( 'open', function callback() {
 	var app = express();
 
 	app.configure( function() {
-		app.set( 'port', config.server.port );
+		app.set( 'port', config.port );
 
 		app.set( 'view engine', 'handlebars' );
 		app.set( 'views', __dirname + '../app/scripts/views' );
 	} );
 
-	app.use( config.server.rest, baucis( {
+	app.use( config.rest, baucis( {
 		swagger: true
 	} ) );
 
