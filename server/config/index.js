@@ -1,13 +1,11 @@
 exports.configs = {
-	'server': {
-		'port': 9000,
-		'host': '127.0.0.1',
-		'rest': '/api/v1',
-		'mongodb': {
-			'hostname': 'localhost',
-			'port': 27017,
-			'db': 'gz'
-		}
+	'port': 9000,
+	'host': '127.0.0.1',
+	'rest': '/api/v1',
+	'mongodb': {
+		'hostname': 'localhost',
+		'port': 27017,
+		'db': 'gz'
 	}
 }
 
