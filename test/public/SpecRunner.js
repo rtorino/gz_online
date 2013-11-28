@@ -16,11 +16,12 @@
 			// Libraries and utility scripts
 			'jquery'                   : 'bower_components/jquery/jquery',
 			'bootstrap'                : 'bower_components/bootstrap/docs/assets/js/bootstrap',
-			'underscore'               : 'bower_components/lodash/lodash',
+			'underscore'               : 'bower_components/lodash/dist/lodash',
 			'backbone'                 : 'bower_components/backbone/backbone',
 			'marionette'               : 'bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
 			'backbone.babysitter'      : 'bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
 			'backbone.wreqr'           : 'bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
+			'backbone.localStorage'    : 'bower_components/backbone.localStorage/backbone.localStorage',
 			'text'                     : 'bower_components/requirejs-text/text',
 			'async'                    : 'bower_components/async/lib/async',
 			'jquery-cookie'            : 'bower_components/jquery.cookie/jquery.cookie',
