@@ -3,11 +3,9 @@ define( function () {
 
 	/* return an array of specs to be run */
 	return {
-		'specs' : [ 
-			'spec/collections/UsersCollectionTest.js', 
-			'spec/controllers/AppControllerTest.js', 
-			'spec/models/UserModelTest.js', 
-			'spec/views/layout/SignupLayoutTest.js'
+		'specs' : [
+			'spec/collections/UsersCollectionTest.js',
+			'spec/models/UserModelTest.js'
 		]
 	};
 } );
