@@ -1,6 +1,5 @@
 var request = require( 'supertest' );
 var helpers = require( '../helpers' );
-var baucis = require( 'baucis' );
 var fixtures = require( '../fixtures' );
 
 var app;
@@ -21,6 +20,10 @@ describe( 'REST - User', function() {
 				.get( '/api/v1/users' )
 				.set( 'Accept', 'application/json' )
 				.expect( 200, done );
+		} );
+
+		it( 'should save a user', function( done ) {
+			done();
 		} );
 
 	} );
