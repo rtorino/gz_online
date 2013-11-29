@@ -20,8 +20,7 @@ db.on( 'error', console.error.bind( console, 'connection error:' ) );
 db.once( 'open', function callback() {
 
 	// REST Controllers
-	require( './controllers/TestController' )( baucis );
-	require( './controllers/UserController' )( baucis );
+	require( './controllers/UsersController' )( baucis );
 
 	var app = express();
 

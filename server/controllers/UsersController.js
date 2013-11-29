@@ -1,8 +1,10 @@
-var User = require( '../schemas/UserSchema' );
+'use strict';
+
+var User = require( '../schemas/UsersSchema' );
 
 module.exports = function( baucis ) {
 	var controller = baucis.rest( {
-		singular: 'user'
+		singular: 'User'
 	} );
 	
 	return controller;
