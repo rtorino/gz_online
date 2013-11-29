@@ -2,22 +2,16 @@ define( function ( require ) {
 	'use strict';
 
 	var Backbone = require( 'backbone' );
-	var template = require( 'hbs!tmpl/layout/adminLayout' );
+	var template = require( 'hbs!tmpl/item/adminNavView' );
 
 	/* Return a Layout class definition */
-	return Backbone.Marionette.Layout.extend( {
+	return Backbone.Marionette.ItemView.extend( {
 
 		initialize : function() {
-			console.log( 'initialize a adminLayout Layout' );
+			console.log( 'initialize a Adminnavview Layout' );
 		},
 
 		template : template,
-
-		/* Layout sub regions */
-		regions : {
-			'menuRegion'    : '#menu-region',
-			'contentRegion' : '#content-region'
-		},
 
 		/* ui selector cache */
 		ui : {},

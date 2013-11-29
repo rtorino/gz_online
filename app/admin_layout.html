@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Title Page</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Bootstrap CSS -->
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<style>
+						/* Sticky footer styles
+			-------------------------------------------------- */
+
+			html,
+			body {
+			  height: 100%;
+			  /* The html and body elements cannot have any padding or margin. */
+			}
+
+			/* Wrapper for page content to push down footer */
+			#wrap {
+			  min-height: 100%;
+			  height: auto;
+			  /* Negative indent footer by its height */
+			  margin: 0 auto -60px;
+			  /* Pad bottom by footer height */
+			  padding: 0 0 60px;
+			}
+
+			/* Set the fixed height of the footer here */
+			#footer {
+			  height: 60px;
+			  background-color: #f5f5f5;
+			}
+
+
+			/* Custom page CSS
+			-------------------------------------------------- */
+			/* Not required for template or sticky footer method. */
+
+			#wrap > .container {
+			  padding: 60px 15px 0;
+			}
+			.container .credit {
+			  margin: 20px 0;
+			}
+
+			#footer > .container {
+			  padding-left: 15px;
+			  padding-right: 15px;
+			}
+
+			code {
+			  font-size: 80%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">Global Zeal Skills Inventory System</a>
+					</div>
+
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse navbar-ex1-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">firstname.lastname@globalzeal.net <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">Settings</a></li>
+									<li><a href="#">Logout</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div><!-- /.navbar-collapse -->
+				</div>
+			</nav>
+
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+						<div class="panel panel-default">
+							  <div class="panel-heading">
+									<h3 class="panel-title">Menu</h3>
+							  </div>
+							  <div class="panel-body">
+									<ul class="nav nav-pills nav-stacked">
+										<li class="active"><a href="#">Users<span class="badge pull-right">5</span></a></li>
+										<li><a href="#">Assessors<span class="badge pull-right">15</span></a></li>
+										<li><a href="#">Skills<span class="badge pull-right">25</span></a></li>
+									</ul>
+							  </div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Users</h3>
+							</div>
+							<div class="panel-body">
+								<div class="panel-group" id="accordion">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title">
+												<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+													Firstname Lastname
+												</a>
+											</h4>
+										</div>
+										<div id="collapseOne" class="panel-collapse collapse">
+											<div class="panel-body">
+												<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+													<img src="http://placehold.it/140x140" class="img-thumbnail img-responsive" alt="Responsive image">
+												</div>
+												<div class="col-xs-6 col-sm-6 col-md-9 col-lg-9">
+													<div class="table-responsive">
+														<table class="table table-hover">
+															<thead>
+																<tr>
+																	<th>Skills</th>
+																	<th>Status</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>HTML</td>
+																	<td><i class="glyphicon glyphicon-thumbs-up"></i></td>
+																</tr>
+																<tr>
+																	<td>CSS</td>
+																	<td><i class="glyphicon glyphicon-thumbs-down"></i></td>
+																</tr>
+																<tr>
+																	<td>JavaScript</td>
+																	<td><i class="glyphicon glyphicon-thumbs-down"></i></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<div class="panel-footer">
+												<label>Assessor:&nbsp;</label>
+												<label>
+													<select class="form-control">
+														<option>Select Assessor</option>
+														<option>Firstname Lastname</option>
+													</select>
+												</label>
+												<span class="pull-right">
+													<button type="button" class="btn btn-success">Assign as assessor</button>
+													<button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="footer">
+			<div class="container">
+				<p class="text-muted credit">&copy; Global Zeal, Inc.</p>
+			</div>
+		</div><!-- /.footer -->
+		</div>
+
+		<!-- jQuery -->
+		<script src="//code.jquery.com/jquery.js"></script>
+		<!-- Bootstrap JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	</body>
+</html>

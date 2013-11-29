@@ -1,24 +1,25 @@
-( function () {
+(function() {
 	'use strict';
 
 	var root = this;
 
-	root.define( function ( require ) {
+	root.define([
+		'views/layout/AdminLayout'
+		],
+		function( Adminlayout ) {
 
-		var AdminLayout = require( 'views/layout/adminLayout' );
+			describe('Adminlayout Layout', function () {
 
-		describe( 'AdminLayout Layout', function() {
+				it('should be an instance of Adminlayout Layout', function () {
+					var AdminLayout = new Adminlayout();
+					expect( AdminLayout ).to.be.an.instanceof( Adminlayout );
+				});
 
-			it( 'should be an instance of AdminLayout Layout', function() {
-				var AdminLayout = new Adminlayout();
-				expect( AdminLayout ).to.be.an.instanceof( AdminLayout );
-			} );
+				it('should have more test written', function(){
+					expect( false ).to.be.ok;
+				});
+			});
 
-			it( 'should have more test written', function() {
-				expect( false ).to.be.ok;
-			} );
-		} );
+		});
 
-	} );
-
-} ).call( this );
+}).call( this );
