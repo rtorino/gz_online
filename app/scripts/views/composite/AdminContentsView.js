@@ -2,8 +2,7 @@ define( function ( require ) {
 	'use strict';
 
 	var Backbone = require( 'backbone' );
-	var template = require( 'hbs!tmpl/composite/adminUsersView' );
-	var ItemView = require( 'views/item/AdminUsersView' );
+	var template = require( 'hbs!tmpl/composite/adminContentsView' );
 
 	/* Return a CompositeView class definition */
 	return Backbone.Marionette.CompositeView.extend( {
@@ -16,8 +15,6 @@ define( function ( require ) {
 
 		/* ui selector cache */
 		ui : {},
-
-		itemView : ItemView,
 
 		/* where are we appending the items views */
 		itemViewContainer : '#accordion',

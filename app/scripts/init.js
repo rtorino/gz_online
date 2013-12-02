@@ -43,4 +43,5 @@ require.config( {
 		'views'                   : 'views',
 		'controllers'             : 'controllers'
 	}
+
 } );

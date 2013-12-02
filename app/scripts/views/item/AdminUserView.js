@@ -3,6 +3,7 @@ define( function ( require ) {
 
 	var Backbone = require( 'backbone' );
 	var template = require( 'hbs!tmpl/item/adminUserView' );
+	var Model    = require( 'models/UserModel' );
 
 	/* Return a ItemView class definition */
 	return Backbone.Marionette.ItemView.extend( {
@@ -12,6 +13,8 @@ define( function ( require ) {
 		},
 
 		template : template,
+
+		model : new Model( { countUsers : 10 } ),
 
 		/* ui selector cache */
 		ui : {},

@@ -16,7 +16,7 @@ define( function( require ) {
 	App.addInitializer( function() {
 		App.Controller = new Controller( {
 			'App': App,
-			'Vent': Vent		
+			'Vent': Vent
 		} );
 
 		Vent.trigger( 'App:start' );

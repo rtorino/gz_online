@@ -2,8 +2,8 @@ define( function ( require ) {
 	'use strict';
 
 	var Backbone = require( 'backbone' );
-	var template = require( 'hbs!tmpl/composite/adminUsersView' );
-	var ItemView = require( 'views/item/AdminUsersView' );
+	var template = require( 'hbs!tmpl/composite/adminAssessorsView' );
+	var ItemView = require( 'views/item/AdminAssessorView' );
 
 	/* Return a CompositeView class definition */
 	return Backbone.Marionette.CompositeView.extend( {

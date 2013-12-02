@@ -6,4 +6,5 @@ define( function( require ) {
 	var App        = require( 'Application' );
 
 	App.start();
+
 } );
