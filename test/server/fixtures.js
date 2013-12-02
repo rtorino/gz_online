@@ -23,6 +23,7 @@ var fixture = module.exports = {
 			app.use( config.rest, baucis() );
 
 			request = request.agent( app );
+			
 		} catch ( error ) {
 			fn( error );
 		}
