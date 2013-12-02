@@ -16,13 +16,13 @@ var fixture = module.exports = {
 
 			mongoose.connect( mongoURL( config.mongodb ) );
 
+
 			require( path.resolve( helpers.controller_path, module + 'Controller' ) )( baucis );
 			
 			var app = express();
 			app.use( config.rest, baucis() );
 
 			request = request.agent( app );
-			
 		} catch ( error ) {
 			fn( error );
 		}
@@ -33,7 +33,7 @@ var fixture = module.exports = {
 	deinit: function( module, fn ) {
 		mongoose.disconnect();
 
-		// Todo: 
+		// Todo:
 		// find a way to remove/drop a module collection
 
 		fn();

@@ -11,7 +11,7 @@ describe( 'REST - User', function() {
 			request = agent;
 			done();
 		} );
-		
+
 	} );
 
 	after( function( done ) {
