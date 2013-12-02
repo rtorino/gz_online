@@ -1,16 +1,14 @@
 // 'use strict';
 
-var request = require( 'supertest' );
 var fixtures = require( '../fixtures' );
-
-var app;
+var request;
 
 describe( 'REST - User', function() {
 
 	before( function( done ) {
 
-		fixtures.init( 'Users', function( error, rest ) {
-			app = rest;
+		fixtures.init( 'Users', function( error, agent ) {
+			request = agent;
 			done();
 		} );
 		
@@ -27,7 +25,7 @@ describe( 'REST - User', function() {
 	describe( 'GET', function() {
 
 		it( 'should fetch users', function( done ) {
-			request( app )
+			request
 				.get( '/api/v1/users' )
 				.set( 'Accept', 'application/json' )
 				.expect( 200, done );
@@ -39,7 +37,7 @@ describe( 'REST - User', function() {
 	describe( 'POST', function() {
 
 		it( 'should save a user with globalzeal email account', function( done ) {
-			request( app )
+			request
 				.post( '/api/v1/users' )
 				.send( {
 					email: 'test.foo@globalzeal.com',
