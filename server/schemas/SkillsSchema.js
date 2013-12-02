@@ -1,25 +1,37 @@
+'use strict';
+
 var mongoose = require( 'mongoose' ),
 	Schema = mongoose.Schema;
 
 var SkillSchema = new Schema( {
+
 	name: String,
+
 	description: String,
+
 	child: [ {
 		type: Schema.Types.ObjectId,
-		ref: Skill
+		// ref: Skill
 	} ],
+
 	parent: {
 		type: Schema.Types.ObjectId,
-		ref: Skill
+		// ref: Skill
 	},
-	openStatus: boolean,
+
+	openStatus: Number,
+
 	exam: {
 		type: Schema.Types.Mixed,
-		ref: Exam
+		// ref: Exam
 	},
+
 	version: Number
+
 }, {
+
 	versionKey: 'version'
+
 } );
 
 module.exports = mongoose.model( 'Skill', SkillSchema );

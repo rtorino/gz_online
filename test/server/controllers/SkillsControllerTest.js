@@ -1,17 +1,14 @@
-// 'use strict';
+'use strict';
 
-var request = require( 'supertest' );
 var fixtures = require( '../fixtures' );
+var request;
 
-var app;
-var skillUrl;
-
-describe( 'REST - Skill', function() {
+describe( 'REST - Skills', function() {
 
 	before( function( done ) {
-		skillUrl = '/api/v1/skills';
-		fixtures.init( 'Skills', function( error, rest ) {
-			app = rest;
+
+		fixtures.init( 'Skills', function( error, agent ) {
+			request = agent;
 			done();
 		} );
 
@@ -26,21 +23,17 @@ describe( 'REST - Skill', function() {
 	} );
 
 	describe( 'GET', function() {
-		//it( 'should do something' );
+
 		it( 'respond with json', function( done ) {
 
-			request( app )
-				.get( skillUrl )
+			request
+				.get( '/api/v1/skills' )
 				.set( 'Accept', 'application/json' )
 				.expect( 'Content-Type', /json/ )
 				.expect( 200, done );
 
-
 		} );
 
-
 	} );
-
-
 
 } );

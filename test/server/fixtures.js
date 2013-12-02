@@ -4,7 +4,6 @@ var mongoose  = require( 'mongoose' );
 var express   = require( 'express' );
 var baucis    = require( 'baucis' );
 var path      = require( 'path' );
-var request   = require( 'supertest' );
 var config    = require( '../../server/config' ).configs;
 var mongoURL  = require( '../../server/config' ).mongoURL;
 var helpers   = require( './helpers' );
@@ -15,7 +14,6 @@ var fixture = module.exports = {
 			var request = require( 'supertest' );
 
 			mongoose.connect( mongoURL( config.mongodb ) );
-
 
 			require( path.resolve( helpers.controller_path, module + 'Controller' ) )( baucis );
 			

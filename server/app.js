@@ -21,6 +21,7 @@ db.once( 'open', function callback() {
 
 	// REST Controllers
 	require( './controllers/UsersController' )( baucis );
+	require( './controllers/SkillsController' )( baucis );
 
 	var app = express();
 
