@@ -1,6 +1,7 @@
 'use strict';
 
 var fixtures = require( '../fixtures' );
+var chai = require( 'chai' );
 var request;
 
 describe( 'REST - User', function() {
@@ -24,11 +25,17 @@ describe( 'REST - User', function() {
 
 	describe( 'GET', function() {
 
-		it( 'should fetch users', function( done ) {
+		it( 'should fetch all users', function( done ) {
 			request
 				.get( '/api/v1/users' )
 				.set( 'Accept', 'application/json' )
-				.expect( 200, done );
+				.end( function ( err, res ){
+					if ( err ){
+						return done( err );
+					}
+					chai.expect( res.body ).not.to.be.null;
+					done();
+				});
 		} );
 
 
@@ -52,5 +59,7 @@ describe( 'REST - User', function() {
 		} );
 
 	} );
+
+
 
 } );
