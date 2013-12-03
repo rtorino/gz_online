@@ -20,6 +20,7 @@ define( function( require ) {
 		} );
 
 		Vent.trigger( 'App:start' );
+
 	} );
 
 	return App;

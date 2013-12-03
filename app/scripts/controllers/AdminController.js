@@ -35,7 +35,7 @@ define( function ( require ) {
 		initialize : function ( options ) {
 			var self = this;
 
-			_.bindAll(this);
+			_.bindAll( this );
 
 			_.each( options, function ( value, key, list ) {
 				self[ key ] = value;
@@ -46,23 +46,23 @@ define( function ( require ) {
 			this.showMainContent();
 
 			this.Vent.on('admin:menu:changed', function(selectedMenu) {
+				var selectedMenu = selectedMenu.replace(/[0-9]/g, '');
 				self.showMainContent(selectedMenu);
 			});
 
 			return this;
 		},
 
-		showMainContent : function (selectedMenu) {
+		showMainContent : function ( selectedMenu ) {
+			console.log(selectedMenu);
 			var User = new models.User();
 
-			console.log(User);
-
-			this.layout.contentRegion.show(new views.AdminContentsView( { test : selectedMenu } ));
+			this.layout.contentRegion.show(new views.AdminContentsView( { model : User } ));
 		},
 
 		_setLayout : function () {
 			this.layout = new layouts.Admin();
-			this.App.content.show(this.layout);
+			this.content.show(this.layout);
 		},
 
 		_setMenu : function () {
