@@ -5,7 +5,9 @@ define( function () {
 	return {
 		'specs' : [
 			'spec/collections/UsersCollectionTest.js',
-			'spec/models/UserModelTest.js'
+			'spec/controllers/AppControllerTest.js',
+			'spec/models/UserModelTest.js',
+			'spec/views/item/SignupViewTest.js'
 		]
 	};
 } );
