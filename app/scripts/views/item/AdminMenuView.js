@@ -20,20 +20,15 @@ define( function ( require ) {
 
 		/* Ui events hash */
 		events : {
-			'click li a' : 'toggleMainContent'
+			'click li a' : 'setActiveMenu'
 		},
 
 		/* on render callback */
 		onRender : function() {},
 
-		toggleMainContent : function ( evt ) {
-			evt.preventDefault();
+		setActiveMenu : function ( evt ) {
 			$(evt.target).parent().siblings().removeClass( 'active' );
 			$(evt.target).parent().addClass( 'active' );
-
-			var selectedMenu = $(evt.target).text();
-
-			communicator.mediator.trigger('admin:menu:changed', selectedMenu);
 		}
 	} );
 

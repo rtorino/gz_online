@@ -20,7 +20,17 @@ define( function( require ) {
 		} );
 
 		Vent.trigger( 'App:start' );
+		// Router init
+		App.Router = new Router( {
+			'controller': App.Controller
+		} );
+	} );
 
+	// start history
+	App.on( 'initialize:after', function() {
+		Backbone.history.start( {
+			'pushState': false
+		} );
 	} );
 
 	return App;

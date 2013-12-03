@@ -4,6 +4,7 @@ define(function() {
 	/* return an array of specs to be run */
 	return {
 		specs: ['spec/controllers/AppController.js',
+		'spec/routers/AdminRouter.js',
 		'spec/views/composite/AdminAssessorsView.js',
 		'spec/views/composite/AdminSkillsView.js',
 		'spec/views/composite/AdminUsersView.js',

@@ -12,7 +12,9 @@ define( function ( require ) {
 	};
 
 	// require collections
-	var collections = {};
+	var collections = {
+		Users : require( 'collections/UsersCollection' )
+	};
 
 	// require layouts
 	var layouts = {
@@ -21,11 +23,10 @@ define( function ( require ) {
 
 	// require views
 	var views = {
-		AdminMenuView     : require( 'views/item/AdminMenuView' ),
-		AdminContentsView : require( 'views/composite/AdminContentsView' ),
-		AdminUserView     : require( 'views/item/AdminUserView' ),
-		AdminAssessorView : require( 'views/item/AdminAssessorView' ),
-		AdminSkillsView   : require( 'views/item/AdminSkillView' ),
+		AdminMenuView      : require( 'views/item/AdminMenuView' ),
+		AdminUsersView     : require( 'views/composite/AdminUsersView' ),
+		AdminAssessorsView : require( 'views/composite/AdminAssessorsView' ),
+		AdminSkillsView    : require( 'views/composite/AdminSkillsView' )
 	};
 
 	// require components
@@ -37,44 +38,89 @@ define( function ( require ) {
 
 			_.bindAll( this );
 
-			_.each( options, function ( value, key, list ) {
+			_.each( options, function ( value, key ) {
 				self[ key ] = value;
 			});
 
-			this._setLayout();
-			this._setMenu();
-			this.showMainContent();
-
-			this.Vent.on('admin:menu:changed', function(selectedMenu) {
-				var selectedMenu = selectedMenu.replace(/[0-9]/g, '');
-				self.showMainContent(selectedMenu);
-			});
+			this.showDefault();
 
 			return this;
 		},
 
-		showMainContent : function ( selectedMenu ) {
-			console.log(selectedMenu);
-			var User = new models.User();
-
-			this.layout.contentRegion.show(new views.AdminContentsView( { model : User } ));
+		showDefault : function () {
+			this.layout = this._getLayout();
+			this.content.show( this.layout );
 		},
 
-		_setLayout : function () {
-			this.layout = new layouts.Admin();
-			this.content.show(this.layout);
+		_getLayout : function () {
+			var layout = new layouts.Admin();
+
+			this.listenTo( layout, 'render', function () {
+				this._showMenuAndContent( layout );
+			}, this );
+
+			return layout;
 		},
 
-		_setMenu : function () {
-			var MenuModel = new models.User( { users : 10 } );
+		_showMenuAndContent : function () {
+			this._addMenu( this.layout.menuRegion );
 
-			this.layout.menuRegion.show( new views.AdminMenuView( { model : MenuModel } ) );
+			this.showUsers( this.layout.contentRegion, 'Users' );
 		},
 
-		_getUsers : function () {},
+		_addMenu : function () {
+			var User = new models.User( {
+				usersCtr     : 5,
+				assessorsCtr : 10,
+				skillsCtr    : 20
+			} );
 
-		_getAssessors : function () {},
+			var menu = new views.AdminMenuView( {
+				model : User
+			} );
 
-		_getSkills : function () {}
+			this.layout.menuRegion.show( menu );
+
+			return menu;
+		},
+
+		showUsers : function () {
+			var User = new models.User( { selectedMenu : 'Users' } );
+
+			var view = new views.AdminUsersView( {
+				model : User,
+				collection : new collections.Users( {
+					model : User
+				} )
+			} );
+
+			this.layout.contentRegion.show( view );
+		},
+
+		showAssessors : function () {
+			var User = new models.User( { selectedMenu : 'Assessors' } );
+
+			var view = new views.AdminAssessorsView( {
+				model : User,
+				collection : new collections.Users( {
+					model : User
+				} )
+			} );
+
+			this.layout.contentRegion.show( view );
+		},
+
+		showSkills : function () {
+			var User = new models.User( { selectedMenu : 'Skills' } );
+
+			var view = new views.AdminSkillsView( {
+				model : User,
+				collection : new collections.Users( {
+					model : User
+				} )
+			} );
+
+			this.layout.contentRegion.show( view );
+		}
 	});
 } );
