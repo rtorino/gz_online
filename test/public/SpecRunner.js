@@ -37,7 +37,8 @@
 			'models'                   : 'scripts/models',
 			'collections'              : 'scripts/collections',
 			'views'                    : 'scripts/views',
-			'templates'                : 'templates',
+			'controllers'			   : 'scripts/controllers',
+			'tmpl'                     : 'templates',
 
 			// Base application level classes
 			'App'                      : 'scripts/App',

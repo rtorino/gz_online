@@ -10,5 +10,7 @@ define( function( require ) {
 
 		defaults: {},
 
+		url: '/api/v1/users'
+
 	} );
 } );

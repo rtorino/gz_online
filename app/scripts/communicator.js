@@ -1,13 +1,11 @@
-define([
-	'backbone',
-	'backbone.marionette'
-],
-function( Backbone ) {
-    'use strict';
+define( function( require ) {
+	'use strict';
 
-	var Communicator = Backbone.Marionette.Controller.extend({
+	var Marionette = require( 'marionette' );
+
+	var Communicator = Marionette.Controller.extend( {
 		initialize: function( options ) {
-			console.log("initialize a Communicator");
+			console.log( "initialize a Communicator" );
 
 			// create a pub sub
 			this.mediator = new Backbone.Wreqr.EventAggregator();
@@ -18,7 +16,7 @@ function( Backbone ) {
 			// create commands
 			this.command = new Backbone.Wreqr.Commands();
 		}
-	});
+	} );
 
 	return new Communicator();
-});
+} );
