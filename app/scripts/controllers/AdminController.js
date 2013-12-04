@@ -2,6 +2,7 @@ define( function ( require ) {
 	'use strict';
 
 	var _          = require( 'underscore' );
+	var $          = require( 'jquery' );
 	var Backbone   = require( 'backbone' );
 	var Marionette = require( 'backbone.marionette' );
 
@@ -23,10 +24,11 @@ define( function ( require ) {
 
 	// require views
 	var views = {
-		AdminMenuView      : require( 'views/item/AdminMenuView' ),
-		AdminUsersView     : require( 'views/composite/AdminUsersView' ),
-		AdminAssessorsView : require( 'views/composite/AdminAssessorsView' ),
-		AdminSkillsView    : require( 'views/composite/AdminSkillsView' )
+		AdminMenuView     : require( 'views/item/AdminMenuView' ),
+		AdminContentsView : require( 'views/composite/AdminContentsView' ),
+		AdminUserView     : require( 'views/item/AdminUserView' ),
+		AdminAssessorView : require( 'views/item/AdminAssessorView' ),
+		AdminSkillView    : require( 'views/item/AdminSkillView' )
 	};
 
 	// require components
@@ -52,14 +54,62 @@ define( function ( require ) {
 			this.content.show( this.layout );
 		},
 
-		_getLayout : function () {
-			var layout = new layouts.Admin();
+		showUsers : function () {
+			this._setActiveMenu();
 
-			this.listenTo( layout, 'render', function () {
-				this._showMenuAndContent( layout );
+			var User = new models.User( { selectedMenu : 'Users' } );
+
+			var view = new views.AdminContentsView( {
+				model      : User,
+				collection : new collections.Users( {
+					model : User
+				} ),
+				itemView   : views.AdminUserView
+			} );
+
+			this.layout.contentRegion.show( view );
+		},
+
+		showAssessors : function () {
+			this._setActiveMenu();
+
+			var User = new models.User( { selectedMenu : 'Assessors' } );
+
+			var view = new views.AdminContentsView( {
+				model      : User,
+				collection : new collections.Users( {
+					model : User
+				} ),
+				itemView   : views.AdminAssessorView
+			} );
+
+			this.layout.contentRegion.show( view );
+		},
+
+		showSkills : function () {
+			this._setActiveMenu();
+
+			var User = new models.User( { selectedMenu : 'Skills' } );
+
+			var view = new views.AdminContentsView( {
+				model      : User,
+				collection : new collections.Users( {
+					model : User
+				} ),
+				itemView   : views.AdminSkillView
+			} );
+
+			this.layout.contentRegion.show( view );
+		},
+
+		_getLayout : function () {
+			var adminLayout = new layouts.Admin();
+
+			this.listenTo( adminLayout, 'render', function () {
+				this._showMenuAndContent( adminLayout );
 			}, this );
 
-			return layout;
+			return adminLayout;
 		},
 
 		_showMenuAndContent : function () {
@@ -75,52 +125,33 @@ define( function ( require ) {
 				skillsCtr    : 20
 			} );
 
-			var menu = new views.AdminMenuView( {
+			this.menu = new views.AdminMenuView( {
 				model : User
 			} );
 
-			this.layout.menuRegion.show( menu );
-
-			return menu;
+			this.layout.menuRegion.show( this.menu );
 		},
 
-		showUsers : function () {
-			var User = new models.User( { selectedMenu : 'Users' } );
+		_setActiveMenu : function () {
+			var currentRoute = '#' + Backbone.history.fragment;
+			var menuOptions  = this.menu.ui.menuOptions;
+			var hashes       = [];
+			menuOptions.parent().siblings().removeClass( 'active' );
 
-			var view = new views.AdminUsersView( {
-				model : User,
-				collection : new collections.Users( {
-					model : User
-				} )
+			_.each( menuOptions, function ( value, key ) {
+				hashes.push( value.hash );
+
+				if ( currentRoute === value.hash ) {
+					$( menuOptions[ key ] ).parent().addClass( 'active' );
+				}
 			} );
 
-			this.layout.contentRegion.show( view );
-		},
-
-		showAssessors : function () {
-			var User = new models.User( { selectedMenu : 'Assessors' } );
-
-			var view = new views.AdminAssessorsView( {
-				model : User,
-				collection : new collections.Users( {
-					model : User
-				} )
-			} );
-
-			this.layout.contentRegion.show( view );
-		},
-
-		showSkills : function () {
-			var User = new models.User( { selectedMenu : 'Skills' } );
-
-			var view = new views.AdminSkillsView( {
-				model : User,
-				collection : new collections.Users( {
-					model : User
-				} )
-			} );
-
-			this.layout.contentRegion.show( view );
+			// Set default active menu if current route has no match in the options hashes
+			if ( $.inArray( currentRoute, hashes ) === -1 ) {
+				$( menuOptions[ 0 ] ).parent().addClass( 'active' );
+			}
 		}
-	});
+
+	} );
+
 } );

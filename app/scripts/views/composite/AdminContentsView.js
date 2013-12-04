@@ -18,8 +18,6 @@ define( function ( require ) {
 				self[ key ] = value;
 			} );
 
-			//console.log(this.itemView);
-
 			console.log( 'initialize a AdminContentsView CompositeView' );
 		},
 
@@ -28,7 +26,7 @@ define( function ( require ) {
 		/* ui selector cache */
 		ui : {},
 
-		itemView : itemView,
+		// itemView : itemView,
 
 		/* where are we appending the items views */
 		itemViewContainer : '#accordion',
@@ -37,9 +35,7 @@ define( function ( require ) {
 		events : {},
 
 		/* on render callback */
-		onRender : function () {
-			console.log(this.itemView);
-		}
+		onRender : function () {}
 
 	} );
 

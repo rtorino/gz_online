@@ -16,20 +16,17 @@ define( function ( require ) {
 		template : template,
 
 		/* ui selector cache */
-		ui : {},
+		ui : {
+			'menuOptions' : 'li a'
+		},
 
 		/* Ui events hash */
-		events : {
-			'click li a' : 'setActiveMenu'
-		},
+		events : {},
 
 		/* on render callback */
 		onRender : function() {},
 
-		setActiveMenu : function ( evt ) {
-			$(evt.target).parent().siblings().removeClass( 'active' );
-			$(evt.target).parent().addClass( 'active' );
-		}
+		setActiveMenu : function () {}
 	} );
 
 } );
