@@ -2,7 +2,7 @@ define( function ( require ) {
 	'use strict';
 
 	var Backbone = require( 'backbone' );
-	var template = require( 'hbs!tmpl/item/adminUserView' );
+	var template = require( 'text!tmpl/item/adminUserView.html' );
 
 	/* Return a ItemView class definition */
 	return Backbone.Marionette.ItemView.extend( {
@@ -11,7 +11,7 @@ define( function ( require ) {
 			console.log( 'initialize a AdminUserView ItemView' );
 		},
 
-		template : template,
+		template : _.template(template),
 
 		/* ui selector cache */
 		ui : {},

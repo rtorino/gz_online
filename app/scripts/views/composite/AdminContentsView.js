@@ -3,7 +3,7 @@ define( function ( require ) {
 
 	var _        = require( 'underscore' );
 	var Backbone = require( 'backbone' );
-	var template = require( 'hbs!tmpl/composite/adminContentsView' );
+	var template = require( 'text!tmpl/composite/adminContentsView.html' );
 	var itemView = require( 'views/item/AdminUserView' );
 
 	/* Return a CompositeView class definition */
@@ -21,7 +21,9 @@ define( function ( require ) {
 			console.log( 'initialize a AdminContentsView CompositeView' );
 		},
 
-		template : template,
+		template : _.template(template),
+
+		className : 'panel panel-default',
 
 		/* ui selector cache */
 		ui : {},

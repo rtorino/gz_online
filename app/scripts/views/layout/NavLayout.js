@@ -1,31 +1,49 @@
-define([
-	'backbone',
-	'hbs!tmpl/layout/NavLayout_tmpl'
-],
-function( Backbone, NavlayoutTmpl  ) {
-    'use strict';
+define( function ( require ) {
+	'use strict';
 
-	/* Return a Layout class definition */
-	return Backbone.Marionette.Layout.extend({
+	var Marionette    = require( 'backbone.marionette' );
+	var _             = require( 'underscore' );
+	var AdminNavView  = require( 'views/item/AdminNavView' );
+	var User          = require( 'models/UserModel' );
 
-		initialize: function() {
-			console.log("initialize a Navlayout Layout");
+	var templates = {
+		'loggedIn'  : require( 'text!tmpl/layout/navLoggedIn.html' ),
+		'loggedOut' : require( 'text!tmpl/layout/navLoggedOut.html' )
+	};
+
+	return Marionette.Layout.extend( {
+		'templates' : {
+			'loggedIn'  : _.template(templates.loggedIn),
+			'loggedOut' : _.template(templates.loggedOut)
 		},
 
-	template: NavlayoutTmpl,
+		'regions' : {
+			'navMenu'   : '#nav-menu'
+		},
 
+		className : 'container',
 
-	/* Layout sub regions */
-	regions: {},
+		'initialize' : function ( options ) {
+			_.bindAll( this );
 
-	/* ui selector cache */
-	ui: {},
+			var self = this;
 
-		/* Ui events hash */
-		events: {},
+			self.render()
+		},
 
-		/* on render callback */
-		onRender: function() {}
-	});
+		'onRender' : function ( options ) {
+			var UserModel = new User( {
+				email : 'super.admin@globalzeal.net'
+			} );
 
-});
+			this.navMenu.show( new AdminNavView( { model : UserModel } ) );
+
+			return this;
+		},
+
+		'getTemplate' : function ( options ) {
+			return this.templates.loggedIn;
+		}
+
+	} );
+} );

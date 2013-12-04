@@ -2,7 +2,7 @@ define( function ( require ) {
 	'use strict';
 
 	var Backbone = require( 'backbone' );
-	var template = require( 'hbs!tmpl/layout/adminLayout' );
+	var template = require( 'text!tmpl/layout/adminLayout.html' );
 
 	/* Return a Layout class definition */
 	return Backbone.Marionette.Layout.extend( {
@@ -11,7 +11,9 @@ define( function ( require ) {
 			console.log( 'initialize a adminLayout Layout' );
 		},
 
-		template : template,
+		template : _.template(template),
+
+		className : 'row',
 
 		/* Layout sub regions */
 		regions : {

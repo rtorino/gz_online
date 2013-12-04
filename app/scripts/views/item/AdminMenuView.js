@@ -3,7 +3,7 @@ define( function ( require ) {
 
 	var $            = require( 'jquery' );
 	var Backbone     = require( 'backbone' );
-	var template     = require( 'hbs!tmpl/item/adminMenuView' );
+	var template     = require( 'text!tmpl/item/adminMenuView.html' );
 	var communicator = require( 'communicator' );
 
 	/* Return a ItemView class definition */
@@ -13,7 +13,9 @@ define( function ( require ) {
 			console.log( 'initialize a Adminmenuview ItemView' );
 		},
 
-		template : template,
+		template : _.template(template),
+
+		className : 'panel panel-default',
 
 		/* ui selector cache */
 		ui : {
