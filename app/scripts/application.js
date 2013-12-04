@@ -11,8 +11,8 @@ define( function( require ) {
 
 	/* Add application regions here */
 	App.addRegions( {
-		'main': '#main-content',
-		'menu': '#navbar'
+		'main': '#main-content'
+		'menu': '#navbar',
 	} );
 
 	/* Add initializers here */
