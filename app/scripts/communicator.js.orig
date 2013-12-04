@@ -1,0 +1,32 @@
+<<<<<<< HEAD
+define( function ( require ) {
+    'use strict';
+
+    var Backbone   = require( 'backbone' );
+    var Marionette = require( 'marionette' );
+=======
+define( function( require ) {
+	'use strict';
+
+	var Marionette = require( 'marionette' );
+
+	var Communicator = Marionette.Controller.extend( {
+		initialize: function( options ) {
+			console.log( "initialize a Communicator" );
+>>>>>>> Fixed some module mismatch between test and application
+
+	var Communicator = Marionette.Controller.extend( {
+		initialize: function () {
+			// create a pub sub
+			this.mediator = new Backbone.Wreqr.EventAggregator();
+
+			//create a req/res
+			this.reqres = new Backbone.Wreqr.RequestResponse();
+
+			// create commands
+			this.command = new Backbone.Wreqr.Commands();
+		}
+	} );
+
+	return new Communicator();
+} );

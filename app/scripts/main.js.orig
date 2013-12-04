@@ -1,0 +1,17 @@
+<<<<<<< HEAD
+define( function ( require ) {
+	'use strict';
+
+	var Backbone = require('backbone');
+	var App      = require('application');
+=======
+define( function( require ) {
+	'use strict';
+
+	var Backbone   = require( 'backbone' );
+	var Marionette = require( 'marionette' );
+	var App        = require( 'Application' );
+>>>>>>> Fixed some module mismatch between test and application
+
+	App.start();
+} );
