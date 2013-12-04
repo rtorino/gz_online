@@ -3,7 +3,7 @@ define( function ( require ) {
 
 	var _          = require( 'underscore' );
 	var Backbone   = require( 'backbone' );
-	var Marionette = require( 'backbone.marionette' );
+	var Marionette = require( 'marionette' );
 	var async      = require( 'async' );
 
 

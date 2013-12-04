@@ -14,6 +14,7 @@ define( function( require ) {
 
 	/* Add initializers here */
 	App.addInitializer( function() {
+
 		App.Controller = new Controller( {
 			'App': App,
 			'Vent': Vent

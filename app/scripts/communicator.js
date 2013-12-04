@@ -4,9 +4,7 @@ define( function( require ) {
 	var Marionette = require( 'marionette' );
 
 	var Communicator = Marionette.Controller.extend( {
-		initialize: function( options ) {
-			console.log( "initialize a Communicator" );
-
+		initialize: function () {
 			// create a pub sub
 			this.mediator = new Backbone.Wreqr.EventAggregator();
 
@@ -19,4 +17,5 @@ define( function( require ) {
 	} );
 
 	return new Communicator();
+
 } );

@@ -1,30 +1,40 @@
 define( function ( require ) {
 	'use strict';
 
-	var Backbone = require( 'backbone' );
-	var template = require( 'text!tmpl/item/adminNavView.html' );
+	var _          = require( 'underscore' );
+	var Marionette = require( 'marionette' );
+	var template   = require( 'text!tmpl/item/adminNavView.html' );
 
-	/* Return a Layout class definition */
-	return Backbone.Marionette.ItemView.extend( {
+	// Return a Layout class definition
+	return Marionette.ItemView.extend( {
 
-		initialize : function() {
-			console.log( 'initialize a Adminnavview ItemView' );
+		initialize : function ( options ) {
+			var self = this;
+
+			_.bindAll( this );
+
+			_.each( options, function ( value, key ) {
+				self[ key ] = value;
+			} );
+
+			return this;
 		},
 
-		template : _.template(template),
+		template : _.template( template ),
 
 		tagName : 'ul',
 
 		className : 'nav navbar-nav navbar-right',
 
-		/* ui selector cache */
+		// ui selector cache
 		ui : {},
 
-		/* Ui events hash */
+		// Ui events hash
 		events : {},
 
-		/* on render callback */
+		// on render callback
 		onRender : function() {}
+
 	} );
 
 } );

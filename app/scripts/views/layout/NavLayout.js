@@ -1,8 +1,8 @@
 define( function ( require ) {
 	'use strict';
 
-	var Marionette    = require( 'backbone.marionette' );
 	var _             = require( 'underscore' );
+	var Marionette    = require( 'marionette' );
 	var AdminNavView  = require( 'views/item/AdminNavView' );
 	var User          = require( 'models/UserModel' );
 
@@ -13,8 +13,8 @@ define( function ( require ) {
 
 	return Marionette.Layout.extend( {
 		'templates' : {
-			'loggedIn'  : _.template(templates.loggedIn),
-			'loggedOut' : _.template(templates.loggedOut)
+			'loggedIn'  : _.template( templates.loggedIn ),
+			'loggedOut' : _.template( templates.loggedOut )
 		},
 
 		'regions' : {
@@ -23,15 +23,15 @@ define( function ( require ) {
 
 		className : 'container',
 
-		'initialize' : function ( options ) {
+		'initialize' : function () {
 			_.bindAll( this );
 
 			var self = this;
 
-			self.render()
+			self.render();
 		},
 
-		'onRender' : function ( options ) {
+		'onRender' : function () {
 			var UserModel = new User( {
 				email : 'super.admin@globalzeal.net'
 			} );
@@ -41,7 +41,7 @@ define( function ( require ) {
 			return this;
 		},
 
-		'getTemplate' : function ( options ) {
+		'getTemplate' : function () {
 			return this.templates.loggedIn;
 		}
 

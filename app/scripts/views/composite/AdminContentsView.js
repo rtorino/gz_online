@@ -1,42 +1,39 @@
 define( function ( require ) {
 	'use strict';
 
-	var _        = require( 'underscore' );
-	var Backbone = require( 'backbone' );
-	var template = require( 'text!tmpl/composite/adminContentsView.html' );
-	var itemView = require( 'views/item/AdminUserView' );
+	var _          = require( 'underscore' );
+	var Marionette = require( 'marionette' );
+	var template   = require( 'text!tmpl/composite/adminContentsView.html' );
 
-	/* Return a CompositeView class definition */
-	return Backbone.Marionette.CompositeView.extend( {
+	// Return a CompositeView class definition
+	return Marionette.CompositeView.extend( {
 
 		initialize : function ( options ) {
 			var self = this;
 
 			_.bindAll( this );
 
-			_.each( options, function ( value, key, list ) {
+			_.each( options, function ( value, key ) {
 				self[ key ] = value;
 			} );
 
-			console.log( 'initialize a AdminContentsView CompositeView' );
+			return this;
 		},
 
-		template : _.template(template),
+		template : _.template( template ),
 
-		className : 'panel panel-default',
+		className : 'panel panel-primary',
 
-		/* ui selector cache */
+		// ui selector cache
 		ui : {},
 
-		// itemView : itemView,
-
-		/* where are we appending the items views */
+		// where are we appending the items views
 		itemViewContainer : '#accordion',
 
-		/* Ui events hash */
+		// Ui events hash
 		events : {},
 
-		/* on render callback */
+		// on render callback
 		onRender : function () {}
 
 	} );

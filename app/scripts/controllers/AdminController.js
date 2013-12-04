@@ -4,7 +4,7 @@ define( function ( require ) {
 	var _          = require( 'underscore' );
 	var $          = require( 'jquery' );
 	var Backbone   = require( 'backbone' );
-	var Marionette = require( 'backbone.marionette' );
+	var Marionette = require( 'marionette' );
 
 	// require models
 	var models = {
@@ -31,9 +31,6 @@ define( function ( require ) {
 		AdminSkillView    : require( 'views/item/AdminSkillView' )
 	};
 
-	// require components
-	var components = {};
-
 	return Marionette.Controller.extend({
 		initialize : function ( options ) {
 			var self = this;
@@ -57,13 +54,29 @@ define( function ( require ) {
 		showUsers : function () {
 			this._setActiveMenu();
 
+			var users = [
+				{
+					_id   : 0,
+					fName : 'Jerome',
+					lName : 'Ramos'
+				},
+				{
+					_id   : 1,
+					fName : 'Rocky',
+					lName : 'Coronel'
+				},
+				{
+					_id   : 2,
+					fName : 'Raymond',
+					lName : 'Torino'
+				}
+			];
+
 			var User = new models.User( { selectedMenu : 'Users' } );
 
 			var view = new views.AdminContentsView( {
 				model      : User,
-				collection : new collections.Users( {
-					model : User
-				} ),
+				collection : new collections.Users( users ),
 				itemView   : views.AdminUserView
 			} );
 
@@ -73,13 +86,29 @@ define( function ( require ) {
 		showAssessors : function () {
 			this._setActiveMenu();
 
+			var assessors = [
+				{
+					_id   : 0,
+					fName : 'James',
+					lName : 'Santos'
+				},
+				{
+					_id   : 1,
+					fName : 'Elizar',
+					lName : 'Pepino'
+				},
+				{
+					_id   : 2,
+					fName : 'George',
+					lName : 'Cordero'
+				}
+			];
+
 			var User = new models.User( { selectedMenu : 'Assessors' } );
 
 			var view = new views.AdminContentsView( {
 				model      : User,
-				collection : new collections.Users( {
-					model : User
-				} ),
+				collection : new collections.Users( assessors ),
 				itemView   : views.AdminAssessorView
 			} );
 
@@ -93,9 +122,7 @@ define( function ( require ) {
 
 			var view = new views.AdminContentsView( {
 				model      : User,
-				collection : new collections.Users( {
-					model : User
-				} ),
+				collection : new collections.Users(  ),
 				itemView   : views.AdminSkillView
 			} );
 
@@ -120,9 +147,9 @@ define( function ( require ) {
 
 		_addMenu : function () {
 			var User = new models.User( {
-				usersCtr     : 5,
-				assessorsCtr : 10,
-				skillsCtr    : 20
+				usersCtr     : 3,
+				assessorsCtr : 3,
+				skillsCtr    : 3
 			} );
 
 			this.menu = new views.AdminMenuView( {
@@ -136,6 +163,7 @@ define( function ( require ) {
 			var currentRoute = '#' + Backbone.history.fragment;
 			var menuOptions  = this.menu.ui.menuOptions;
 			var hashes       = [];
+
 			menuOptions.parent().siblings().removeClass( 'active' );
 
 			_.each( menuOptions, function ( value, key ) {

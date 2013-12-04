@@ -4,8 +4,9 @@ define( function( require ) {
 	// ## Import statements
 
 	// Libs
-	var Marionette = require( 'backbone.marionette' );
-	var Backbone = require( 'backbone' );
+
+	var Backbone   = require( 'backbone' );
+	var Marionette = require( 'marionette' );
 
 	// Project scripts
 	var Router = require( 'routers/AdminRouter' );
@@ -37,8 +38,7 @@ define( function( require ) {
 		}
 	} );
 
-	App.addInitializer( function( options ) {
-
+	App.addInitializer( function () {
 		// Controller init
 		App.Controller = new Controller( {
 			//'session' : App.session,
