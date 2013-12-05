@@ -48,10 +48,10 @@ describe( 'REST - User', function() {
 	} );
 
 describe( 'POST', function() {
-		var url  = '/users/';
-		var newUser = {
-			email		: 'john.doe@globalzeal.net',
-			username	: 'john.doe',
+		var url  = '/users';
+		var user = {
+			email		: 'johndoe@globalzeal.net',
+			username	: 'johndoe',
 			password	: 'oednhoj',
 			fName		: 'jhon',
 			lName		: 'doe',
@@ -62,8 +62,10 @@ describe( 'POST', function() {
 		var error, response, body;
 
 		beforeEach( function( done ) {
-				request.post( url )
-					.send( newUser )
+
+				request
+					.post( url )
+					.send( user )
 					.expect( 'Content-Type', /json/ )
 					.expect( 200 )
 					.end( function( responseError, responseObject) {
@@ -205,7 +207,7 @@ describe( 'POST', function() {
 
 
 	describe( 'PUT', function () {
-		 var url;
+		var url;
 
 		var updateUser = {
 			email		: 'john.doe@globalzeal.net',
@@ -220,10 +222,10 @@ describe( 'POST', function() {
 		 var error, response, body;
 
 		before( function( done ) {
-			url = '/users/' + user._id;
 
-			request.put( url )
-				.send( updateUser )
+			request
+				.put( url )
+				.send( user )
 				.expect( 'Content-Type', /json/ )
 				.expect( 200 )
 				.end( function( responseError, responseObject) {
@@ -374,10 +376,10 @@ describe( 'POST', function() {
 
 		var error, response;
 
-		before( function( done ) { 
+		before( function( done ) {
 			url = '/users/'+ user._id;
 			request.del( url )
-				.end( function( responseError, responseObject ) { 
+				.end( function( responseError, responseObject ) {
 					error = responseError;
 					response = responseObject;
 
@@ -385,7 +387,7 @@ describe( 'POST', function() {
 				} );
 		} );
 
-		it( 'should return 200', function( done ) { 
+		it( 'should return 200', function( done ) {
 			response.statusCode.should.equal( 200 );
 
 			done();

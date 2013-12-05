@@ -188,9 +188,11 @@ describe( 'REST - Skills', function() {
 				response.statusCode.should.equal( 200 );
 			} );
 
-			it( 'should be json', function() {
-				response.should.be.json;
-			} );
+			request
+				.get( '/skills' )
+				.set( 'Accept', 'application/json' )
+				.expect( 'Content-Type', /json/ )
+				.expect( 200, done );
 
 		} );
 

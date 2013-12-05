@@ -2,7 +2,7 @@ define( function( require ) {
 	'use strict';
 
 	var Marionette    = require( 'marionette' );
-	var Communicator  = require( 'communicator' );
+	var Communicator  = require( 'Communicator' );
 
 	var RegionManager = Marionette.Controller.extend( {
 
