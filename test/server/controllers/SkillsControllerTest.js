@@ -27,7 +27,7 @@ describe( 'REST - Skills', function() {
 		it( 'respond with json', function( done ) {
 
 			request
-				.get( '/api/v1/skills' )
+				.get( '/skills' )
 				.set( 'Accept', 'application/json' )
 				.expect( 'Content-Type', /json/ )
 				.expect( 200, done );

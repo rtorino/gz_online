@@ -22,6 +22,7 @@
 			'backbone.babysitter'      : 'bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
 			'backbone.wreqr'           : 'bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
 			'backbone.localStorage'    : 'bower_components/backbone.localStorage/backbone.localStorage',
+			'backbone.validation'      : 'bower_components/backbone-validation/dist/backbone-validation-amd',
 			'text'                     : 'bower_components/requirejs-text/text',
 			'async'                    : 'bower_components/async/lib/async',
 			'jquery-cookie'            : 'bower_components/jquery.cookie/jquery.cookie',
@@ -41,8 +42,10 @@
 			'tmpl'                     : 'templates',
 
 			// Base application level classes
-			'App'                      : 'scripts/App',
+			'App'                      : 'scripts/Application',
 			'Communicator'             : 'scripts/Communicator',
+			'Vent'                     : 'scripts/Vent',
+			'RegionManager'            : 'scripts/RegionManager',
 			'Router'                   : 'scripts/routers/AppRouter',
 			'Controller'               : 'scripts/controllers/AppController'
 		},

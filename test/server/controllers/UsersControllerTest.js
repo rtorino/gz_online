@@ -46,7 +46,7 @@ describe( 'REST - User', function() {
 	} );
 
 describe( 'POST', function() {
-		var url  = '/users/';
+		var url  = '/users';
 		var user = {
 			email		: 'johndoe@globalzeal.net',
 			username	: 'johndoe',
@@ -60,7 +60,8 @@ describe( 'POST', function() {
 		var error, response, body;
 
 		beforeEach( function( done ) {
-				request.post( url )
+				request
+					.post( url )
 					.send( user )
 					.expect( 'Content-Type', /json/ )
 					.expect( 200 )
@@ -215,7 +216,8 @@ describe( 'POST', function() {
 		var error, response, body;
 
 		before( function( done ) {
-			request.put( url )
+			request
+				.put( url )
 				.send( user )
 				.expect( 'Content-Type', /json/ )
 				.expect( 200 )
@@ -347,7 +349,8 @@ describe( 'POST', function() {
 
 				};
 
-				request.put( updateUserUrl )
+				request
+					.put( updateUserUrl )
 					.send( updateUser )
 					.end( function(responseError, responseObject) {
 						responseObject.statusCode.should.equal( 400 );

@@ -1,7 +1,7 @@
 exports.configs = {
 	'port': 9000,
 	'host': '127.0.0.1',
-	'rest': '/api/v1',
+	'rest': '/',
 	'mongodb': {
 		'hostname': 'localhost',
 		'port': 27017,
