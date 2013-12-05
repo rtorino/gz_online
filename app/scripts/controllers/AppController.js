@@ -24,6 +24,7 @@ define( function( require ) {
 
 			var signupLayout = new views.SignupLayout();
 			this.App.main.show( signupLayout );
+
 		}
 
 	} );

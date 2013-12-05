@@ -11,7 +11,7 @@ define( function( require ) {
 
 	/* Add application regions here */
 	App.addRegions( {
-		'main': '#main-content'
+		'content': '#main-content',
 		'menu': '#navbar',
 	} );
 
