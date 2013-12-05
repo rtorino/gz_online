@@ -22,16 +22,33 @@ define( function ( require ) {
 
 		template : _.template( template ),
 
-		className : 'panel panel-info',
+		className : 'panel panel-warning',
 
 		// ui selector cache
-		ui : {},
+		ui : {
+			'kickBtn' : '#kickBtn',
+			'deleteBtn' : '#deleteBtn'
+		},
 
 		// Ui events hash
-		events : {},
+		events : {
+			'mouseover a.btn' : 'showTooltip',
+		},
 
 		// on render callback
-		onRender : function() {}
+		onRender : function() {
+			this.ui.kickBtn.tooltip( {
+				title : 'Kick as assessor'
+			} );
+
+			this.ui.deleteBtn.tooltip( {
+				title : 'Delete user'
+			} );
+		},
+
+		showTooltip : function ( event ) {
+			$( event.target ).tooltip( 'show' );
+		}
 
 	} );
 

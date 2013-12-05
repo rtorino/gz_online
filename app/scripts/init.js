@@ -41,6 +41,7 @@ require.config( {
 		'models'                  : 'models',
 		'collections'             : 'collections',
 		'views'                   : 'views',
-		'controllers'             : 'controllers'
+		'controllers'             : 'controllers',
+		'routers'                 : 'routers'
 	}
 } );
