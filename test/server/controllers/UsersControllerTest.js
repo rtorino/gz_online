@@ -8,6 +8,8 @@ var	should = chai.should();
 
 var request;
 
+var user;
+
 describe( 'REST - User', function() {
 
 	before( function( done ) {
@@ -46,29 +48,30 @@ describe( 'REST - User', function() {
 	} );
 
 describe( 'POST', function() {
-		var url  = '/users';
-		var user = {
-			email		: 'johndoe@globalzeal.net',
-			username	: 'johndoe',
+		var url  = '/users/';
+		var newUser = {
+			email		: 'john.doe@globalzeal.net',
+			username	: 'john.doe',
 			password	: 'oednhoj',
 			fName		: 'jhon',
 			lName		: 'doe',
-			role		: 'user',
+			role		: 'admin',
 			verified	: 0
 		};
 
 		var error, response, body;
 
 		beforeEach( function( done ) {
-				request
-					.post( url )
-					.send( user )
+				request.post( url )
+					.send( newUser )
 					.expect( 'Content-Type', /json/ )
 					.expect( 200 )
 					.end( function( responseError, responseObject) {
 						error     = responseError;
 						response  = responseObject;
 						body      = responseObject.body;
+
+						user = body;
 
 						done();
 
@@ -202,23 +205,25 @@ describe( 'POST', function() {
 
 
 	describe( 'PUT', function () {
-		var url  = '/users/529be4f7bae0bdd111000001';
-		var user = {
+		 var url;
+
+		var updateUser = {
 			email		: 'john.doe@globalzeal.net',
-			username	: 'john.doe',
-			password	: 'thisisnew',
+			username	: 'johnny',
+			password	: 'oednhoj',
 			fName		: 'john',
 			lName		: 'doe',
-			role		: 'user',
+			role		: 'admin',
 			verified	: 0
 		};
 
-		var error, response, body;
+		 var error, response, body;
 
 		before( function( done ) {
-			request
-				.put( url )
-				.send( user )
+			url = '/users/' + user._id;
+
+			request.put( url )
+				.send( updateUser )
 				.expect( 'Content-Type', /json/ )
 				.expect( 200 )
 				.end( function( responseError, responseObject) {
@@ -268,19 +273,19 @@ describe( 'POST', function() {
 
 		it( 'should return the correct types', function( done) {
 
-			body.email.should.be.equal( user.email );
-			body.username.should.be.equal( user.username );
-			body.password.should.be.equal( user.password );
-			body.fName.should.be.equal( user.fName );
-			body.lName.should.be.equal( user.lName );
-			body.role.should.be.equal( user.role );
-			body.verified.should.be.equal( user.verified );
+			body.email.should.be.equal( updateUser.email );
+			body.username.should.be.equal( updateUser.username );
+			body.password.should.be.equal( updateUser.password );
+			body.fName.should.be.equal( updateUser.fName );
+			body.lName.should.be.equal( updateUser.lName );
+			body.role.should.be.equal( updateUser.role );
+			body.verified.should.be.equal( updateUser.verified );
 
 			done();
 		} );
 
 		it( 'should be able to edit password', function( done ) {
-			var updateUserUrl = '/users/password/529be4f7bae0bdd111000001';
+			var updateUserUrl = '/users/password/' + user._id;
 
 			var updateUser = {
 				'email'		: 'john.doe@globalzeal.net',
@@ -291,7 +296,7 @@ describe( 'POST', function() {
 				'verified'	: 0,
 				'password1'	: 'thisisold',
 				'password2'	: 'thisisold',
-				'password'	: 'thisisnew'
+				'password'	: 'oednhoj'
 
 			};
 
@@ -299,6 +304,7 @@ describe( 'POST', function() {
 				.send( updateUser )
 				.end( function(responseError, responseObject) {
 					responseObject.statusCode.should.equal( 200 );
+					responseObject.body.message.should.equal( 'Password updated' );
 
 					done();
 				} );
@@ -308,18 +314,18 @@ describe( 'POST', function() {
 		describe( 'Errors, Unauthorized', function() {
 
 			it( 'should not be able to edit password because current password is not correct', function( done ) {
-				var updateUserUrl = '/users/password/529be4f7bae0bdd111000001';
+				var updateUserUrl = '/users/password/' + user._id;
 
 				var updateUser = {
 					'email'		: 'john.doe@globalzeal.net',
 					'username'	: 'john.doe',
 					'fName'		: 'john',
 					'lName'		: 'doe',
-					'role'		: 'user',
+					'role'		: 'admin',
 					'verified'	: 0,
 					'password1'	: 'thisisold',
 					'password2'	: 'thisisold',
-					'password'	: 'thisisnew'
+					'password'	: 'csdsdfsdfs'
 
 				};
 
@@ -334,14 +340,14 @@ describe( 'POST', function() {
 			} );
 
 			it( 'should not be able to edit password because password1 does not match password2', function( done ) {
-				var updateUserUrl = '/users/password/529be4f7bae0bdd111000001';
+				var updateUserUrl = '/users/password/' + user._id;
 
 				var updateUser = {
 					'email'		: 'john.doe@globalzeal.net',
 					'username'	: 'john.doe',
 					'fName'		: 'john',
 					'lName'		: 'doe',
-					'role'		: 'user',
+					'role'		: 'admin',
 					'verified'	: 0,
 					'password1'	: 'thisisold',
 					'password2'	: 'fddfd',
@@ -360,6 +366,29 @@ describe( 'POST', function() {
 					} );
 
 			} );
+		} );
+	} );
+
+	describe( 'DELETE', function () {
+		var url;
+
+		var error, response;
+
+		before( function( done ) { 
+			url = '/users/'+ user._id;
+			request.del( url )
+				.end( function( responseError, responseObject ) { 
+					error = responseError;
+					response = responseObject;
+
+					done();
+				} );
+		} );
+
+		it( 'should return 200', function( done ) { 
+			response.statusCode.should.equal( 200 );
+
+			done();
 		} );
 	} );
 
