@@ -72,6 +72,41 @@ module.exports = function( baucis ) {
 		} );
 
 	} );
+
+	controller.post( '/login', function ( req, res, next ){
+		
+		var email = (req.body.email) ? req.body.email.trim() : "";
+
+		if(email.length <= 0){
+			res.send({
+				"statusCode" : -1,
+				"statusMsg" : "Username Missing"
+			});
+		}else {
+			User.find({
+				email: email,
+				password: req.body.password
+			}, function ( err, user ){
+				if ( err ){
+					return handleError ( err );
+				}else{
+					if(user.length <= 0) {
+						res.send({
+							"statusCode" : 0,
+							"statusMsg" : "Username or password not found",
+							"username" : req.body.email
+						});	
+					}else{
+						res.send({
+							"statusCode" : 1,
+							"statusMsg" : "Welcome",
+							"username" : req.body.email
+						});
+					}
+				}
+			});
+		}
+	});
 	
 	return controller;
 }

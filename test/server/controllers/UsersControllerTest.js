@@ -31,7 +31,7 @@ describe( 'REST - User', function() {
 
 		it( 'should fetch all users', function( done ) {
 			request
-				.get( '/api/v1/users' )
+				.get( '/users' )
 				.set( 'Accept', 'application/json' )
 				.end( function ( err, res ){
 					if ( err ){
@@ -46,7 +46,7 @@ describe( 'REST - User', function() {
 	} );
 
 describe( 'POST', function() {
-		var url  = '/api/v1/users/';
+		var url  = '/users/';
 		var user = {
 			email		: 'johndoe@globalzeal.net',
 			username	: 'johndoe',
@@ -139,7 +139,7 @@ describe( 'POST', function() {
 		} );
 
 		it( 'should save a user with globalzeal email account', function( done ) {
-			request.post( '/api/v1/users' )
+			request.post( '/users' )
 				.send( {
 					email: 'test.foo@globalzeal.net',
 					password: 'testpass'
@@ -152,11 +152,56 @@ describe( 'POST', function() {
 				} );
 		} );
 
+		it ( 'should have a POST-login route', function ( done ){
+			request
+				.post ( '/users/login' )
+				.set ( 'Accept', 'application/json' )
+				.end ( function ( err, res ){
+					if( err ){
+						return done (err );
+					}
+					chai.expect( res ).not.to.have.property( 'badRequest', true );
+					done();
+				});
+		} );
+
+		it( 'should not allow invalid credentials to login', function( done ) {
+			request
+				.post( '/users/login' )
+				.send( {
+					email: 'not.valid@globalzeal.net',
+					password: 'notvalid'
+				} )
+				.end( function( error, response ){
+					if (error){
+						return done(error);
+					}
+					chai.expect(response.body.statusCode).to.be.equal(0);
+					done();
+				})
+		} );
+
+		it( 'should not allow blank email address', function ( done ){
+			request
+				.post( '/users/login' )
+				.send( {
+					email : '      ',
+					password : 'notvalid'
+				} )
+				.end( function ( error, response ){
+					if (error){
+						return done( error );
+					}
+					chai.expect(response.body.statusCode).to.be.equal(-1);
+					done();
+				} );
+		} );
+
 	} );
 
 
 	describe( 'PUT', function () {
-		var url  = '/api/v1/users/529be4f7bae0bdd111000001';
+		var url  = '/users/529be4f7bae0bdd111000001';
 		var user = {
 			email		: 'john.doe@globalzeal.net',
 			username	: 'john.doe',
@@ -233,7 +278,7 @@ describe( 'POST', function() {
 		} );
 
 		it( 'should be able to edit password', function( done ) {
-			var updateUserUrl = '/api/v1/users/password/529be4f7bae0bdd111000001';
+			var updateUserUrl = '/users/password/529be4f7bae0bdd111000001';
 
 			var updateUser = {
 				'email'		: 'john.doe@globalzeal.net',
@@ -261,7 +306,7 @@ describe( 'POST', function() {
 		describe( 'Errors, Unauthorized', function() {
 
 			it( 'should not be able to edit password because current password is not correct', function( done ) {
-				var updateUserUrl = '/api/v1/users/password/529be4f7bae0bdd111000001';
+				var updateUserUrl = '/users/password/529be4f7bae0bdd111000001';
 
 				var updateUser = {
 					'email'		: 'john.doe@globalzeal.net',
@@ -287,7 +332,7 @@ describe( 'POST', function() {
 			} );
 
 			it( 'should not be able to edit password because password1 does not match password2', function( done ) {
-				var updateUserUrl = '/api/v1/users/password/529be4f7bae0bdd111000001';
+				var updateUserUrl = '/users/password/529be4f7bae0bdd111000001';
 
 				var updateUser = {
 					'email'		: 'john.doe@globalzeal.net',
