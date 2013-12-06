@@ -2,6 +2,7 @@ define( function ( require ) {
 	'use strict';
 
 	var _             = require( 'underscore' );
+	//var Backbone      = require( 'backbone' );
 	var Marionette    = require( 'marionette' );
 	var AdminNavView  = require( 'views/item/AdminNavView' );
 	var User          = require( 'models/UserModel' );
@@ -42,7 +43,12 @@ define( function ( require ) {
 		},
 
 		'getTemplate' : function () {
-			return this.templates.loggedIn;
+			//return this.templates.loggedOut;
+			if ( !window.location.hash ) {
+				return this.templates.loggedOut;
+			} else {
+				return this.templates.loggedIn;
+			}
 		}
 
 	} );

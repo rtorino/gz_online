@@ -23,9 +23,9 @@ define( function( require ) {
 	// ## Initializers
 	// The regions for the application
 	App.on( 'initialize:before', function( options ) {
-		if ( options.regions ) {
-			App.addRegions( options.regions );
-		}
+		// if ( options.regions ) {
+		// 	App.addRegions( options.regions );
+		// }
 	} );
 
 	// Session init

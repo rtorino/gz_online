@@ -25,6 +25,7 @@ require.config( {
 		'backbone'                : '../bower_components/backbone-amd/backbone',
 		'underscore'              : '../bower_components/underscore-amd/underscore',
 		'backbone.validation'     : '../bower_components/backbone-validation/dist/backbone-validation-amd',
+		'async'                   : '../bower_components/async/lib/async',
 
 		/* alias all marionette libs */
 		'marionette'              : '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
