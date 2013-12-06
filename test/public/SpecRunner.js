@@ -31,18 +31,19 @@
 			'base64'                   : 'bower_components/base64', // *! utility to encode/decode
 			'porthole'                 : 'bower_components/porthole/src/porthole.min', // *! platform <--> app communication
 			'shim'                     : 'bower_components/shim', // *! utility for object prototypes
-			'MiddlewareRouter'         : 'bower_components/marionette-middleware-router/MiddlewareRouter', // *! custom marionette router similar to express
-
+			'MiddlewareRouter'         : 'scripts/MiddlewareRouter',
 
 			// root folders
 			'models'                   : 'scripts/models',
 			'collections'              : 'scripts/collections',
 			'views'                    : 'scripts/views',
 			'controllers'			   : 'scripts/controllers',
+			'routers'                  : 'scripts/routers',
 			'tmpl'                     : 'templates',
 
 			// Base application level classes
 			'App'                      : 'scripts/Application',
+			'Admin'                    : 'scripts/Admin',
 			'Communicator'             : 'scripts/Communicator',
 			'Vent'                     : 'scripts/Vent',
 			'RegionManager'            : 'scripts/RegionManager',
