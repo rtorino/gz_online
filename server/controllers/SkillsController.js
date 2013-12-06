@@ -63,7 +63,6 @@ module.exports = function( baucis ) {
 
 
 
-
 		};
 
 		//add only unique values
@@ -121,14 +120,14 @@ module.exports = function( baucis ) {
 					if ( result != null ) {
 						callback( null, id );
 					}
-					callback(null,null);
+					callback( null, null );
 				} )
 			},
 
 			//update parent
 			function( id, callback ) {
 				//console.log(id);
-				if ( id == null ){
+				if ( id == null ) {
 					callback( null, {
 						'message': 'its the root.'
 					} );
@@ -180,21 +179,27 @@ module.exports = function( baucis ) {
 					Skill.findOne( {
 						name: request.body.parent
 					}, function( err, parentSkill ) {
-						//console.log( "findOne" + err );
+						//console.log( "findOne" + parentSkill );
 						if ( err != null ) {
 							callback( {
 								'message': 'Skill not found'
 							} );
 
 						}
-
-						callback( null, parentSkill );
+						if ( parentSkill == null ) {
+							callback( null, {
+								_id: null
+							} );
+						}
+						else
+							callback( null, parentSkill );
 
 					} );
 
 				},
 				//save the skill
 				function( parentSkill, callback ) {
+					//console.log(parentSkill);
 					var newSkill = new Skill( {
 						name: request.body.name,
 						description: request.body.description,
@@ -207,7 +212,7 @@ module.exports = function( baucis ) {
 
 
 					newSkill.save( function( err, newSkill ) {
-
+						//console.log(parentSkill);
 						//console.log( "save" + err );
 						if ( err != null ) {
 							callback( {
@@ -222,19 +227,24 @@ module.exports = function( baucis ) {
 				//update parent
 
 				function( newSkill, parentSkill, callback ) {
-					var update = {
-						'$push': {
-							'child': newSkill._id
-						}
-					};
-					Skill.findByIdAndUpdate( parentSkill._id, update, function( err ) {
-						if ( !err ) {
-							callback( null, newSkill );
-						}
-						callback( {
-							'message': 'Error in updating skill\'s parent'
+					//console.log( "help"+parentSkill._id );
+					if ( parentSkill._id != null ) {
+						var update = {
+							'$push': {
+								'child': newSkill._id
+							}
+						};
+
+						Skill.findByIdAndUpdate( parentSkill._id, update, function( err ) {
+							if ( !err ) {
+								callback( null, newSkill );
+							}
+							callback( {
+								'message': 'Error in updating skill\'s parent'
+							} );
 						} );
-					} );
+					}
+					callback( null, newSkill );
 				}
 
 			], //send the response callback
