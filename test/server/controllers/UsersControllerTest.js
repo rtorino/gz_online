@@ -49,7 +49,7 @@ describe( 'REST - User', function() {
 
 describe( 'POST', function() {
 		var url  = '/users';
-		var user = {
+		var postUser = {
 			email		: 'johndoe@globalzeal.net',
 			username	: 'johndoe',
 			password	: 'oednhoj',
@@ -65,7 +65,7 @@ describe( 'POST', function() {
 
 				request
 					.post( url )
-					.send( user )
+					.send( postUser )
 					.expect( 'Content-Type', /json/ )
 					.expect( 200 )
 					.end( function( responseError, responseObject) {
@@ -222,10 +222,11 @@ describe( 'POST', function() {
 		 var error, response, body;
 
 		before( function( done ) {
+			url = '/users/' + user._id;
 
 			request
 				.put( url )
-				.send( user )
+				.send( updateUser )
 				.expect( 'Content-Type', /json/ )
 				.expect( 200 )
 				.end( function( responseError, responseObject) {
