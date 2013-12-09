@@ -18,14 +18,16 @@
     "smarttabs" : true,
 
     "globals": {
-        "module"     : true,
-        "require"    : true,
-        "define"     : true,
-        "before"     : true,
-        "beforeEach" : true,
-        "describe"   : true,
-        "it"         : true,
-        "after"      : true,
-        "afterEach"  : true
+        "module"         : true,
+        "require"        : true,
+        "define"         : true,
+        "before"         : true,
+        "beforeEach"     : true,
+        "describe"       : true,
+        "it"             : true,
+        "after"          : true,
+        "afterEach"      : true,
+        "mocha"          : true,
+        "mochaPhantomJS" : true
     }
 }

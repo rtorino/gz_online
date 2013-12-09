@@ -8,33 +8,31 @@ var config    = require( '../../server/config' ).configs;
 var mongoURL  = require( '../../server/config' ).mongoURL;
 var helpers   = require( './helpers' );
 
-var fixture = module.exports = {
+module.exports = {
 	init: function( module, fn ) {
+		var request = require( 'supertest' );
+		var agent;
 		try {
-			var request = require( 'supertest' );
-
 			mongoose.connect( mongoURL( config.mongodb ) );
 
 			require( path.resolve( helpers.controller_path, module + 'Controller' ) )( baucis );
-			
+
 			var app = express();
 			app.use( config.rest, baucis() );
 
-			request = request.agent( app );
-			
+			agent = request.agent( app );
 		} catch ( error ) {
 			fn( error );
 		}
 
-		fn( null, request );
+		fn( null, agent );
 	},
 
 	deinit: function( module, fn ) {
-		mongoose.disconnect();
-
-		// Todo:
-		// find a way to remove/drop a module collection
-
-		fn();
+		var model = require( path.resolve( helpers.schema_path, module + 'Schema' ) );
+		model.find().remove( function() {
+			mongoose.disconnect();
+			fn();
+		} );
 	}
-}
+};

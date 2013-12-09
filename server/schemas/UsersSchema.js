@@ -41,7 +41,7 @@ UserSchema.pre( 'save', function( next ) {
 	emailArray = this.email.split( '@' );
 	domain = emailArray[ emailArray.length - 1 ];
 
-	if ( domain != 'globalzeal.net' ) {
+	if ( domain !== 'globalzeal.net' ) {
 		next( new Error( 'Invalid email account.' ) );
 	}
 

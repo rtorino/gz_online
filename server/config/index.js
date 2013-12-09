@@ -1,3 +1,5 @@
+'use strict';
+
 exports.configs = {
 	'port': 9000,
 	'host': '127.0.0.1',
@@ -7,7 +9,7 @@ exports.configs = {
 		'port': 27017,
 		'db': 'gz'
 	}
-}
+};
 
 // Helper function for generating mongodb configs
 exports.mongoURL = function( obj ) {
@@ -19,4 +21,4 @@ exports.mongoURL = function( obj ) {
 	} else {
 		return 'mongodb://' + obj.hostname + ':' + obj.port + '/' + obj.db;
 	}
-}
+};
