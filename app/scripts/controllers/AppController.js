@@ -26,8 +26,6 @@ define( function( require ) {
 		},
 
 		showSignup: function( event ) {
-			console.log( "Appcontroller showSignup" );
-
 			var signupLayout = new views.SignupLayout();
 			this.App.content.show( signupLayout );
 			this._setMenu();

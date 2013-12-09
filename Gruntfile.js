@@ -92,7 +92,7 @@ module.exports = function( grunt ) {
 			},
 
 			all: { 
-				src: ['test/server/**/*.js'] 
+				src: ['test/server/**/*.js']
 			}
 		},
 
