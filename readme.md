@@ -1,4 +1,6 @@
-# Global Zeal - Team Eskrima mini-project
+## Global Zeal - Team Eskrima mini-project
+
+[![Build Status](https://travis-ci.org/Eskrima/gz_online.png?branch=dev)](https://travis-ci.org/Eskrima/gz_online)
 
 ## Installation
 
