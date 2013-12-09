@@ -31,7 +31,7 @@ module.exports = function( baucis ) {
 				);
 			}
 
-			var user = user.toObject();
+			user = user.toObject();
 
 			if ( request.body.password !== user.password ) {
 				return response.send( 400,
@@ -59,12 +59,25 @@ module.exports = function( baucis ) {
 			user.password = request.body.password1;
 
 			User.update( { _id : request.params.id }, user, function( error, numberAffected, raw ) {
+
+				if( error ) {
+					return response.send( 400,
+						{
+							'statusCode' : 400,
+							'type'		 : 'Query Error',
+							'message'	 : error
+						}
+					);
+				}
+
 				return response.send( 200,
 					{
-						'statusCode' : 200,
-						'type'		 : 'Ok',
-						'message'	 : 'Password updated',
-						'data'		 : user
+						'statusCode'		: 200,
+						'type'				: 'Ok',
+						'message'			: 'Password updated',
+						'data'				: user,
+						'numberAffected'	: numberAffected,
+						'raw'				: raw
 					}
 				);
 			} );
@@ -74,7 +87,7 @@ module.exports = function( baucis ) {
 	} );
 
 	controller.post( '/login', function ( req, res ){
-		
+
 		var email = (req.body.email) ? req.body.email.trim() : '';
 
 		if(email.length <= 0){
@@ -107,6 +120,6 @@ module.exports = function( baucis ) {
 			});
 		}
 	});
-	
+
 	return controller;
-}
+};
