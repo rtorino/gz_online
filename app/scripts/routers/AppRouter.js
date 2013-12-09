@@ -1,10 +1,9 @@
 define( function ( require ) {
 	'use strict';
 
-	var Marionette       = require( 'marionette' );
-	var MiddlewareRouter = require( 'MiddlewareRouter' );
+	var Marionette = require( 'marionette' );
 
-	return Marionette.MiddlewareRouter.extend( {
+	return Marionette.AppRouter.extend( {
 		'appRoutes' : {
 			'admin*actions'   : 'bootstrapAdminApp'
 		}
