@@ -2,7 +2,8 @@ define( function( require ) {
 	'use strict';
 
 	var Marionette = require( 'marionette' );
-	var Backbone = require( 'backbone' );
+	var Backbone   = require( 'backbone' );
+	var _          = require('underscore');
 
 	var views = {
 		'SignupLayout' : require( 'views/layout/SignupLayout' ),
@@ -42,7 +43,7 @@ define( function( require ) {
 			var self = this;
 
 			if ( !self[ appName ] ) {
-				self[ appName ] = app,
+				self[ appName ] = app;
 				self[ appName ].start( {
 					'regions' : {
 						'content' : self.content

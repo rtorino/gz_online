@@ -8,7 +8,7 @@ define( function ( require ) {
 
 	// require models
 	var models = {
-		User   : require('models/UserModel'),
+		User   : require('models/UserModel')
 		//Skills : require('models/SkillModel'),
 	};
 
