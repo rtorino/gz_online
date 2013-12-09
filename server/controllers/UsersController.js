@@ -7,7 +7,7 @@ module.exports = function( baucis ) {
 		singular: 'User'
 	} );
 
-	controller.put( '/password/:id', function( request, response, next ) {
+	controller.put( '/password/:id', function( request, response ) {
 
 		User.findById( request.params.id, function( error, user ) {
 
@@ -73,14 +73,14 @@ module.exports = function( baucis ) {
 
 	} );
 
-	controller.post( '/login', function ( req, res, next ){
+	controller.post( '/login', function ( req, res ){
 		
-		var email = (req.body.email) ? req.body.email.trim() : "";
+		var email = (req.body.email) ? req.body.email.trim() : '';
 
 		if(email.length <= 0){
 			res.send({
-				"statusCode" : -1,
-				"statusMsg" : "Username Missing"
+				'statusCode' : -1,
+				'statusMsg' : 'Username Missing'
 			});
 		}else {
 			User.find({
@@ -88,19 +88,19 @@ module.exports = function( baucis ) {
 				password: req.body.password
 			}, function ( err, user ){
 				if ( err ){
-					return handleError ( err );
+					return  err;
 				}else{
 					if(user.length <= 0) {
 						res.send({
-							"statusCode" : 0,
-							"statusMsg" : "Username or password not found",
-							"username" : req.body.email
-						});	
+							'statusCode' : 0,
+							'statusMsg' : 'Username or password not found',
+							'username' : req.body.email
+						});
 					}else{
 						res.send({
-							"statusCode" : 1,
-							"statusMsg" : "Welcome",
-							"username" : req.body.email
+							'statusCode' : 1,
+							'statusMsg' : 'Welcome',
+							'username' : req.body.email
 						});
 					}
 				}
