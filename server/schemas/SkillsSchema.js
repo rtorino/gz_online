@@ -10,20 +10,20 @@ var SkillSchema = new Schema( {
 	description: String,
 
 	child: [ {
-		type: Schema.Types.ObjectId,
-		// ref: Skill
+		type: Schema.Types.ObjectId
+		// ,ref: Skill
 	} ],
 
 	parent: {
-		type: Schema.Types.ObjectId,
-		// ref: Skill
+		type: Schema.Types.ObjectId
+		// ,ref: Skill
 	},
 
 	openStatus: Number,
 
 	exam: {
-		type: Schema.Types.Mixed,
-		// ref: Exam
+		type: Schema.Types.Mixed
+		// ,ref: Exam
 	},
 
 	version: Number
