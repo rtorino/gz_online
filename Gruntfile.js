@@ -91,7 +91,7 @@ module.exports = function( grunt ) {
 				reporter: 'spec'
 			},
 
-			all: { 
+			all: {
 				src: ['test/server/**/*.js']
 			}
 		},
@@ -143,7 +143,8 @@ module.exports = function( grunt ) {
 				'Gruntfile.js',
 				'<%= yeoman.app %>/scripts/{,*/}*.js',
 				'!<%= yeoman.app %>/scripts/vendor/*',
-				'test/spec/{,*/}*.js'
+				'test/{,*/}*.js',
+				'server/{,*/}*.js'
 			]
 		},
 
