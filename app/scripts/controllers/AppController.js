@@ -12,7 +12,7 @@ define( function( require ) {
 	};
 
 	var applications = {
-		'AdminApp' : require( 'Admin' )
+		'SystemApp' : require( 'System' )
 	};
 
 	return Marionette.Controller.extend( {
@@ -32,8 +32,8 @@ define( function( require ) {
 		},
 
 		// sub applications bootstrap
-		bootstrapAdminApp : function () {
-			this.bootstrapApp( 'Admin', applications.AdminApp );
+		bootstrapSystemApp : function () {
+			this.bootstrapApp( 'System', applications.SystemApp );
 		},
 
 		// app helper function
@@ -44,7 +44,7 @@ define( function( require ) {
 				self[ appName ] = app;
 				self[ appName ].start( {
 					'regions' : {
-						'content' : self.content
+						'content' : self.App.content
 					},
 					'Vent' : self.Vent
 				} );

@@ -3,10 +3,10 @@ define( function ( require ) {
 
 	var _          = require( 'underscore' );
 	var Marionette = require( 'marionette' );
-	var template   = require( 'text!tmpl/composite/adminContentsView.html' );
+	var template   = require( 'text!tmpl/item/systemSkillView.html' );
 
-	// Return a CompositeView class definition
-	return Marionette.CompositeView.extend( {
+	// Return a ItemView class definition
+	return Marionette.ItemView.extend( {
 
 		initialize : function ( options ) {
 			var self = this;
@@ -22,19 +22,14 @@ define( function ( require ) {
 
 		template : _.template( template ),
 
-		className : 'panel panel-primary',
-
 		// ui selector cache
 		ui : {},
-
-		// where are we appending the items views
-		itemViewContainer : '#accordion',
 
 		// Ui events hash
 		events : {},
 
 		// on render callback
-		onRender : function () {}
+		onRender : function() {}
 
 	} );
 

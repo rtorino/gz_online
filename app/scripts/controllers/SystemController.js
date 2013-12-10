@@ -19,16 +19,16 @@ define( function ( require ) {
 
 	// require layouts
 	var layouts = {
-		Admin : require( 'views/layout/AdminLayout' )
+		System : require( 'views/layout/SystemLayout' )
 	};
 
 	// require views
 	var views = {
-		AdminMenuView     : require( 'views/item/AdminMenuView' ),
-		AdminContentsView : require( 'views/composite/AdminContentsView' ),
-		AdminUserView     : require( 'views/item/AdminUserView' ),
-		AdminAssessorView : require( 'views/item/AdminAssessorView' ),
-		AdminSkillView    : require( 'views/item/AdminSkillView' )
+		SystemMenuView     : require( 'views/item/SystemMenuView' ),
+		SystemContentsView : require( 'views/composite/SystemContentsView' ),
+		SystemUserView     : require( 'views/item/SystemUserView' ),
+		SystemAssessorView : require( 'views/item/SystemAssessorView' ),
+		SystemSkillView    : require( 'views/item/SystemSkillView' )
 	};
 
 	return Marionette.Controller.extend({
@@ -48,7 +48,7 @@ define( function ( require ) {
 
 		showDefault : function () {
 			this.layout = this._getLayout();
-			this.content.show( this.layout );
+			this.App.content.show( this.layout );
 		},
 
 		showUsers : function () {
@@ -74,10 +74,10 @@ define( function ( require ) {
 
 			var User = new models.User( { selectedMenu : 'Users' } );
 
-			var view = new views.AdminContentsView( {
+			var view = new views.SystemContentsView( {
 				model      : User,
 				collection : new collections.Users( users ),
-				itemView   : views.AdminUserView
+				itemView   : views.SystemUserView
 			} );
 
 			this.layout.contentRegion.show( view );
@@ -106,10 +106,10 @@ define( function ( require ) {
 
 			var User = new models.User( { selectedMenu : 'Assessors' } );
 
-			var view = new views.AdminContentsView( {
+			var view = new views.SystemContentsView( {
 				model      : User,
 				collection : new collections.Users( assessors ),
-				itemView   : views.AdminAssessorView
+				itemView   : views.SystemAssessorView
 			} );
 
 			this.layout.contentRegion.show( view );
@@ -120,23 +120,23 @@ define( function ( require ) {
 
 			var User = new models.User( { selectedMenu : 'Skills' } );
 
-			var view = new views.AdminContentsView( {
+			var view = new views.SystemContentsView( {
 				model      : User,
 				collection : new collections.Users(  ),
-				itemView   : views.AdminSkillView
+				itemView   : views.SystemSkillView
 			} );
 
 			this.layout.contentRegion.show( view );
 		},
 
 		_getLayout : function () {
-			var adminLayout = new layouts.Admin();
+			var systemLayout = new layouts.System();
 
-			this.listenTo( adminLayout, 'render', function () {
-				this._showMenuAndContent( adminLayout );
+			this.listenTo( systemLayout, 'render', function () {
+				this._showMenuAndContent( systemLayout );
 			}, this );
 
-			return adminLayout;
+			return systemLayout;
 		},
 
 		_showMenuAndContent : function () {
@@ -152,7 +152,7 @@ define( function ( require ) {
 				skillsCtr    : 3
 			} );
 
-			this.menu = new views.AdminMenuView( {
+			this.menu = new views.SystemMenuView( {
 				model : User
 			} );
 

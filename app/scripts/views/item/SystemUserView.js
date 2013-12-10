@@ -2,8 +2,9 @@ define( function ( require ) {
 	'use strict';
 
 	var _          = require( 'underscore' );
+	var $          = require( 'jquery' );
 	var Marionette = require( 'marionette' );
-	var template   = require( 'text!tmpl/item/adminAssessorView.html' );
+	var template   = require( 'text!tmpl/item/systemUserView.html' );
 
 	// Return a ItemView class definition
 	return Marionette.ItemView.extend( {
@@ -26,7 +27,7 @@ define( function ( require ) {
 
 		// ui selector cache
 		ui : {
-			'kickBtn' : '#kickBtn',
+			'assignBtn' : '#assignBtn',
 			'deleteBtn' : '#deleteBtn'
 		},
 
@@ -36,9 +37,9 @@ define( function ( require ) {
 		},
 
 		// on render callback
-		onRender : function() {
-			this.ui.kickBtn.tooltip( {
-				title : 'Kick as assessor'
+		onRender : function () {
+			this.ui.assignBtn.tooltip( {
+				title : 'Assign as assessor'
 			} );
 
 			this.ui.deleteBtn.tooltip( {

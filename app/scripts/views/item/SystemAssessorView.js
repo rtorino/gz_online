@@ -3,7 +3,7 @@ define( function ( require ) {
 
 	var _          = require( 'underscore' );
 	var Marionette = require( 'marionette' );
-	var template   = require( 'text!tmpl/item/adminUserView.html' );
+	var template   = require( 'text!tmpl/item/systemAssessorView.html' );
 
 	// Return a ItemView class definition
 	return Marionette.ItemView.extend( {
@@ -26,7 +26,7 @@ define( function ( require ) {
 
 		// ui selector cache
 		ui : {
-			'assignBtn' : '#assignBtn',
+			'kickBtn' : '#kickBtn',
 			'deleteBtn' : '#deleteBtn'
 		},
 
@@ -36,9 +36,9 @@ define( function ( require ) {
 		},
 
 		// on render callback
-		onRender : function () {
-			this.ui.assignBtn.tooltip( {
-				title : 'Assign as assessor'
+		onRender : function() {
+			this.ui.kickBtn.tooltip( {
+				title : 'Kick as assessor'
 			} );
 
 			this.ui.deleteBtn.tooltip( {
@@ -47,7 +47,7 @@ define( function ( require ) {
 		},
 
 		showTooltip : function ( event ) {
-			$( event.target ).tooltip('show');
+			$( event.target ).tooltip( 'show' );
 		}
 
 	} );

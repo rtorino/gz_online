@@ -3,10 +3,10 @@ define( function ( require ) {
 
 	var _          = require( 'underscore' );
 	var Marionette = require( 'marionette' );
-	var template   = require( 'text!tmpl/item/adminNavView.html' );
+	var template   = require( 'text!tmpl/layout/systemLayout.html' );
 
 	// Return a Layout class definition
-	return Marionette.ItemView.extend( {
+	return Marionette.Layout.extend( {
 
 		initialize : function ( options ) {
 			var self = this;
@@ -22,9 +22,13 @@ define( function ( require ) {
 
 		template : _.template( template ),
 
-		tagName : 'ul',
+		className : 'row',
 
-		className : 'nav navbar-nav navbar-right',
+		// Layout sub regions
+		regions : {
+			'menuRegion'    : '#menu-region',
+			'contentRegion' : '#content-region'
+		},
 
 		// ui selector cache
 		ui : {},

@@ -1,11 +1,10 @@
 define( function ( require ) {
 	'use strict';
 
-	var _             = require( 'underscore' );
-	//var Backbone      = require( 'backbone' );
-	var Marionette    = require( 'marionette' );
-	var AdminNavView  = require( 'views/item/AdminNavView' );
-	var User          = require( 'models/UserModel' );
+	var _              = require( 'underscore' );
+	var Marionette     = require( 'marionette' );
+	var SystemNavView  = require( 'views/item/SystemNavView' );
+	var User           = require( 'models/UserModel' );
 
 	var templates = {
 		'loggedIn'  : require( 'text!tmpl/layout/navLoggedIn.html' ),
@@ -37,7 +36,7 @@ define( function ( require ) {
 				email : 'super.admin@globalzeal.net'
 			} );
 
-			this.navMenu.show( new AdminNavView( { model : UserModel } ) );
+			this.navMenu.show( new SystemNavView( { model : UserModel } ) );
 
 			return this;
 		},

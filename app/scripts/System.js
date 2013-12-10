@@ -1,4 +1,4 @@
-define( function( require ) {
+define( function ( require ) {
 	'use strict';
 
 	// ## Import statements
@@ -9,27 +9,22 @@ define( function( require ) {
 	var Marionette = require( 'marionette' );
 
 	// Project scripts
-	var Router = require( 'routers/AdminRouter' );
-	var Controller = require( 'controllers/AdminController' );
+	var Router     = require( 'routers/SystemRouter' );
+	var Controller = require( 'controllers/SystemController' );
 
 	// App instantiation
 	var App = new Marionette.Application();
 
-	App.addRegions( {
-		'menu': '#navbar',
-		'content': '#main-content'
-	} );
-
 	// ## Initializers
 	// The regions for the application
-	App.on( 'initialize:before', function( options ) {
-		// if ( options.regions ) {
-		// 	App.addRegions( options.regions );
-		// }
+	App.on( 'initialize:before', function ( options ) {
+		if ( options.regions ) {
+			App.addRegions( options.regions );
+		}
 	} );
 
 	// Session init
-	App.addInitializer( function( options ) {
+	App.addInitializer( function ( options ) {
 		if ( options.session ) {
 			App.session = options.session;
 		}
@@ -42,8 +37,7 @@ define( function( require ) {
 		// Controller init
 		App.Controller = new Controller( {
 			//'session' : App.session,
-			'App': App,
-			'content': App.content,
+			'App' : App,
 			'Vent': App.Vent
 		} );
 
@@ -55,7 +49,7 @@ define( function( require ) {
 	} );
 
 	// Restart history for new router
-	App.on( 'initialize:after', function() {
+	App.on( 'initialize:after', function () {
 		if ( Backbone.History.started === true ) {
 			Backbone.history.stop();
 		}

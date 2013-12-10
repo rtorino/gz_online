@@ -5,7 +5,7 @@ define( function ( require ) {
 
 	return Marionette.AppRouter.extend( {
 		'appRoutes' : {
-			'admin*actions'   : 'bootstrapAdminApp'
+			'system*actions'   : 'bootstrapSystemApp'
 		}
 	} );
 

@@ -3,7 +3,7 @@ define( function ( require ) {
 
 	var _          = require( 'underscore' );
 	var Marionette = require( 'marionette' );
-	var template   = require( 'text!tmpl/item/adminMenuView.html' );
+	var template   = require( 'text!tmpl/item/systemMenuView.html' );
 
 	// Return a ItemView class definition
 	return Marionette.ItemView.extend( {

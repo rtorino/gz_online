@@ -5,10 +5,10 @@ define( function ( require ) {
 
 	return Marionette.AppRouter.extend( {
 		'appRoutes' : {
-			'admin/users'     : 'showUsers',
-			'admin/assessors' : 'showAssessors',
-			'admin/skills'    : 'showSkills',
-			'admin*action'    : 'showUsers'
+			'system/users'     : 'showUsers',
+			'system/assessors' : 'showAssessors',
+			'system/skills'    : 'showSkills',
+			'system*action'    : 'showUsers'
 		}
 	} );
 
