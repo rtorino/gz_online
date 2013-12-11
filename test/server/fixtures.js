@@ -18,6 +18,8 @@ module.exports = {
 			require( path.resolve( helpers.controller_path, module + 'Controller' ) )( baucis );
 
 			var app = express();
+
+			app.use( express.json() );
 			app.use( config.rest, baucis() );
 
 			agent = request.agent( app );

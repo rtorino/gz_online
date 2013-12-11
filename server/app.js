@@ -32,6 +32,7 @@ db.once( 'open', function callback() {
 		app.set( 'views', __dirname + '../app/scripts/views' );
 	} );
 
+	app.use( express.json() );
 	app.use( config.rest, baucis( {
 		swagger: true
 	} ) );
