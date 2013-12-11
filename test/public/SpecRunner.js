@@ -31,6 +31,7 @@
 			'base64'                   : 'bower_components/base64', // *! utility to encode/decode
 			'porthole'                 : 'bower_components/porthole/src/porthole.min', // *! platform <--> app communication
 			'shim'                     : 'bower_components/shim', // *! utility for object prototypes
+			'spinjs'                   : 'bower_components/spinjs/spin',
 			'MiddlewareRouter'         : 'scripts/MiddlewareRouter',
 
 			// root folders

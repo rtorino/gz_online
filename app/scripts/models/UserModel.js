@@ -19,16 +19,21 @@ define( function( require ) {
 
 		'validation': {
 			'email': {
-				'pattern': 'email',
-				'required': true,
-				'msg': 'Please enter a valid globalzeal email.'
+				'pattern'  : 'email',
+				'required' : true,
+				'msg'      : 'Please enter a valid globalzeal email.'
 			},
 
-			'password': {
-				'pattern': 'password',
-				'required': true,
-				'msg': 'Invalid password.'
-			}
+			'password': [
+				{
+					'minLength' : 6,
+					'msg'       : 'Password length should be at least 6 characters.'
+				},
+				{
+					'pattern' : 'password',
+					'msg'     : 'Password should contain at least 1 lowercase, 1 uppercase and 1 numeric character.'
+				}
+			]
 		},
 
 		'url': '/users'

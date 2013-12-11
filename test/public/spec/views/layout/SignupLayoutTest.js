@@ -14,9 +14,26 @@ define( function( require ) {
 			view.render();
 		} );
 
+		after( function() {
+			view.remove();
+		} );
+
 		it( 'should be an instance of SignupLayout Layout', function() {
 			var signupLayout = new SignupLayout();
 			signupLayout.should.be.an.instanceof( SignupLayout );
+		} );
+
+		it( 'should show spinner when event triggered', function ( done ) {
+				
+			view.on( 'ajaxSpinner', function( opts ) {
+				view.$el.find( '.spinner' ).should.have.length( 1 );
+				done();
+			} );
+
+			view.trigger( 'ajaxSpinner', {
+				'spin' : true
+			} );
+
 		} );
 
 		describe( 'Errors', function() {
@@ -24,15 +41,30 @@ define( function( require ) {
 			it( 'should display errors when submitted with invalid attribute', function( done ) {
 
 				var $el = view.$el;
-				var email = view.ui.email;
-				var password = view.ui.password;
 
-				email.val('test.foo@bar.com'); // Invalid email
-				password.val('testpass'); // Invalid password
+				view.ui.email.val('test.foo@bar.com'); // Invalid email
+				view.ui.password.val('testpass'); // Invalid password
+				view.ui.verifyPassword.val('testpass');
 
 				$el.submit();
 
-				Vent.on( 'SignupLayout:error', function( errors ) {
+				view.on( 'SignupLayout:error', function( errors ) {
+					done();
+				} );
+
+			} );
+
+			it( 'should display error when password and verifyPassword do not match', function( done ) {
+				
+				var $el = view.$el;
+
+				view.ui.email.val('test.foo@globalzeal.net');
+				view.ui.password.val('Tests12');
+				view.ui.verifyPassword.val('Tests1');
+
+				$el.submit();
+
+				view.on( 'SignupLayout:error', function( errors ) {
 					done();
 				} );
 

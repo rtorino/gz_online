@@ -26,6 +26,7 @@ require.config( {
 		'underscore'              : '../bower_components/underscore-amd/underscore',
 		'backbone.validation'     : '../bower_components/backbone-validation/dist/backbone-validation-amd',
 		'async'                   : '../bower_components/async/lib/async',
+		'spinjs'                  : '../bower_components/spinjs/spin',
 
 		/* alias all marionette libs */
 		'marionette'              : '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
