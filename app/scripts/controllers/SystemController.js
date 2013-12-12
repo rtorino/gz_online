@@ -8,28 +8,35 @@ define( function ( require ) {
 
 	// require models
 	var models = {
-		User   : require('models/UserModel')
-		//Skills : require('models/SkillModel'),
+		'User'        : require( 'models/UserModel' ),
+		'SkillModel'  : require( 'models/SkillModel' )
 	};
 
 	// require collections
 	var collections = {
-		Users : require( 'collections/UsersCollection' )
+		'Users'            : require( 'collections/UsersCollection' ),
+		'SkillsCollection' : require( 'collections/SkillsCollection' )
 	};
 
 	// require layouts
 	var layouts = {
-		System : require( 'views/layout/SystemLayout' )
+		'System' : require( 'views/layout/SystemLayout' )
 	};
 
 	// require views
 	var views = {
-		SystemMenuView     : require( 'views/item/SystemMenuView' ),
-		SystemContentsView : require( 'views/composite/SystemContentsView' ),
-		SystemUserView     : require( 'views/item/SystemUserView' ),
-		SystemAssessorView : require( 'views/item/SystemAssessorView' ),
-		SystemSkillView    : require( 'views/item/SystemSkillView' )
+		'SystemMenuView'           : require( 'views/item/SystemMenuView' ),
+		'SystemContentsView'       : require( 'views/composite/SystemContentsView' ),
+		'SystemUserView'           : require( 'views/item/SystemUserView' ),
+		'SystemAssessorView'       : require( 'views/item/SystemAssessorView' ),
+		'SystemSkillView'          : require( 'views/item/SystemSkillView' ),
+		'SystemSkillsTreeRootView' : require( 'views/composite/SystemSkillsTreeRootView' ),
+		'SystemSkillsTreeView'     : require( 'views/composite/SystemSkillsTreeView' ),
+		'ErrorView'                : require( 'views/ErrorView' )
 	};
+
+	// reutilsquire utils
+	var util = require( 'util' );
 
 	return Marionette.Controller.extend({
 		initialize : function ( options ) {
@@ -116,17 +123,47 @@ define( function ( require ) {
 		},
 
 		showSkills : function () {
-			this._setActiveMenu();
+			var self = this;
 
-			var User = new models.User( { selectedMenu : 'Skills' } );
+			var SkillTreeNode = Backbone.Model.extend( {
+				'initialize' : function ( ) {
+					var children = this.get( 'children' );
+					if ( children ) {
+						this.children = new SkillTreeNodeCollection( children );
+						this.unset( 'children' );
+					}
+				},
 
-			var view = new views.SystemContentsView( {
-				model      : User,
-				collection : new collections.Users(  ),
-				itemView   : views.SystemSkillView
+				'defaults' : {
+					'name' : 'Skill name',
+
+					'description' : 'Some description'
+				}
+			});
+
+			var SkillTreeNodeCollection = Backbone.Collection.extend( {
+				'model' : SkillTreeNode
 			} );
 
-			this.layout.contentRegion.show( view );
+			var skillTreeView = new views.SystemSkillsTreeRootView({
+				'itemView' : views.SystemSkillsTreeView
+			});
+
+			var SkillsCollection = new collections.SkillsCollection();
+
+			this._setActiveMenu();
+
+			SkillsCollection.baucis().then( function ( collection, response ) {
+				if ( response === 'success' ) {
+					var skillTree = new SkillTreeNodeCollection( self._buildJSONSkillTree( null, collection, [] ) );
+
+					skillTreeView.collection = skillTree;
+				} else {
+					skillTreeView.itemView = views.ErrorView;
+				}
+
+				self.layout.contentRegion.show( skillTreeView );
+			} );
 		},
 
 		_getLayout : function () {
@@ -146,10 +183,15 @@ define( function ( require ) {
 		},
 
 		_addMenu : function () {
+			var SkillsCollection = new collections.SkillsCollection();
+			var skillsCtr = SkillsCollection.baucis( { count : true } ).then( function ( result ) {
+				return result;
+			} );
+
 			var User = new models.User( {
-				usersCtr     : 3,
-				assessorsCtr : 3,
-				skillsCtr    : 3
+				'usersCtr'     : 3,
+				'assessorsCtr' : 3,
+				'skillsCtr'    : skillsCtr
 			} );
 
 			this.menu = new views.SystemMenuView( {
@@ -178,6 +220,24 @@ define( function ( require ) {
 			if ( $.inArray( currentRoute, hashes ) === -1 ) {
 				$( menuOptions[ 0 ] ).parent().addClass( 'active' );
 			}
+		},
+
+		'_buildJSONSkillTree' : function ( parentId, skillCollection, skillTree ) {
+			_.each( skillCollection, function ( element, index, list ) {
+				if ( element.parent === null ) {
+					skillTree.push( element );
+				} else {
+					var parent = _.findWhere( list, { _id : element.parent } );
+
+					if ( !parent.children ) {
+						_.extend( parent, { children : [] } );
+					}
+
+					parent.children.push( element );
+				}
+			} )	;
+
+			return skillTree;
 		}
 
 	} );

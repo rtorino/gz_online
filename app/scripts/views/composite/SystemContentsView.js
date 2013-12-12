@@ -22,7 +22,7 @@ define( function ( require ) {
 
 		template : _.template( template ),
 
-		className : 'panel panel-primary',
+		className : 'panel panel-default',
 
 		// ui selector cache
 		ui : {},
