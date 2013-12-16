@@ -32,7 +32,9 @@ define( function ( require ) {
 		'SystemSkillView'          : require( 'views/item/SystemSkillView' ),
 		'SystemSkillsTreeRootView' : require( 'views/composite/SystemSkillsTreeRootView' ),
 		'SystemSkillsTreeView'     : require( 'views/composite/SystemSkillsTreeView' ),
-		'ErrorView'                : require( 'views/ErrorView' )
+		'ErrorView'                : require( 'views/ErrorView' ),
+		'ManageSkillView'          : require( 'views/item/ManageSkillView' ),
+		'EmptyItemView'            : require( 'views/item/EmptyItemView' )
 	};
 
 	// reutilsquire utils
@@ -128,6 +130,7 @@ define( function ( require ) {
 			var SkillTreeNode = Backbone.Model.extend( {
 				'initialize' : function ( ) {
 					var children = this.get( 'children' );
+
 					if ( children ) {
 						this.children = new SkillTreeNodeCollection( children );
 						this.unset( 'children' );
@@ -138,16 +141,24 @@ define( function ( require ) {
 					'name' : 'Skill name',
 
 					'description' : 'Some description'
-				}
+				},
+
+				'idAttribute' : '_id',
+
+				'urlRoot' : '/skills'
 			});
 
 			var SkillTreeNodeCollection = Backbone.Collection.extend( {
 				'model' : SkillTreeNode
 			} );
 
-			var skillTreeView = new views.SystemSkillsTreeRootView({
-				'itemView' : views.SystemSkillsTreeView
-			});
+			var skillTreeView = new views.SystemSkillsTreeRootView( {
+				'tagName'  : 'ul',
+
+				'itemView' : views.SystemSkillsTreeView,
+
+				'emptyView' : views.EmptyItemView
+			} );
 
 			var SkillsCollection = new collections.SkillsCollection();
 
@@ -155,7 +166,9 @@ define( function ( require ) {
 
 			SkillsCollection.baucis().then( function ( collection, response ) {
 				if ( response === 'success' ) {
-					var skillTree = new SkillTreeNodeCollection( self._buildJSONSkillTree( null, collection, [] ) );
+					var skillTreeObj = self._buildJSONSkillTree( null, collection, [] );
+
+					var skillTree = new SkillTreeNodeCollection( skillTreeObj );
 
 					skillTreeView.collection = skillTree;
 				} else {
@@ -164,6 +177,21 @@ define( function ( require ) {
 
 				self.layout.contentRegion.show( skillTreeView );
 			} );
+		},
+
+		'createSkill' : function () {
+			event.stopPropagation();
+
+			var Skill = new models.SkillModel( {
+				'parent' : null,
+				'action' : 'Create'
+			} );
+
+			var CreateSkillView = new views.ManageSkillView( {
+				'model' : Skill
+			} );
+
+			CreateSkillView.render();
 		},
 
 		_getLayout : function () {

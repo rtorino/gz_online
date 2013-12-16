@@ -2,7 +2,6 @@ define( function ( require ) {
 	'use strict';
 
 	var Backbone = require( 'backbone' );
-	var Skills   = require( 'collections/SkillsCollection' );
 
 	/* Return a model class definition */
 	return Backbone.Model.extend( {
@@ -10,12 +9,21 @@ define( function ( require ) {
 			var children = this.get( 'children' );
 
 			if ( children ) {
+				var Skills = require( 'collections/SkillsCollection' );
+
 				this.children = new Skills( children );
 				this.unset( 'children' );
 			}
 		},
 
-		'defaults' : {},
+		'defaults' : {
+			'name'        : '',
+			'description' : ''
+		},
+
+		'idAttribute' : '_id',
+
+		'urlRoot' : '/skills'
 
 	} );
 

@@ -1,11 +1,14 @@
 define( function ( require ) {
 	'use strict';
 
-	var $          = require( 'jquery' );
-	var _          = require( 'underscore' );
-	var Marionette = require( 'marionette' );
-	var template   = require( 'text!tmpl/composite/systemSkillsTreeView.html' );
-	var bootbox    = require( 'bootbox' );
+	var $               = require( 'jquery' );
+	var _               = require( 'underscore' );
+	var Backbone        = require( 'backbone' );
+	var Marionette      = require( 'marionette' );
+	var template        = require( 'text!tmpl/composite/systemSkillsTreeView.html' );
+	var bootbox         = require( 'bootbox' );
+
+	var ManageSkillView = require( 'views/item/ManageSkillView' );
 
 
 	/* Return a CompositeView class definition */
@@ -16,16 +19,39 @@ define( function ( require ) {
 
 		'initialize' : function () {
 			this.collection = this.model.children;
+
+			this.on( 'item:added', function ( view ) {
+				this.bindTo( view, 'refresh', this.renderTree, this );
+			} );
+		},
+
+		'initialEvents' : function () {
+			 // Bind to any changes in the collection and redraw the entire menu chain
+			if ( this.collection ) {
+				this.bindTo( this.collection, 'add', this.renderTree, this );
+				this.bindTo( this.collection, 'remove', this.renderTree, this );
+				this.bindTo( this.collection, 'reset', this.renderTree, this );
+			}
+		},
+
+		'renderTree' : function () {
+			this.render();
 		},
 
 		'ui' : {
 			'addSkillBtn'    : '#js-add-skill',
-			'editSkillBtn'   : '#js-edit-skill',
+			'updateSkillBtn' : '#js-update-skill',
 			'deleteSkillBtn' : '#js-delete-skill'
 		},
 
 		'events' : {
-			'mouseover .skill-description' : 'showDescription'
+			'mouseover .skill-node'      : 'showDescription',
+			'mouseover #js-add-skill'    : 'showTooltip',
+			'mouseover #js-update-skill' : 'showTooltip',
+			'mouseover #js-delete-skill' : 'showTooltip',
+			'click #js-add-skill'        : 'addSkill',
+			'click #js-update-skill'     : 'updateSkill',
+			'click #js-delete-skill'     : 'deleteSkill'
 		},
 
 		'appendHtml' : function ( collectionView, itemView ) {
@@ -37,34 +63,89 @@ define( function ( require ) {
 			if ( _.isUndefined( this.collection ) ) {
 				this.$( 'ul:first' ).remove();
 			}
+
+			// Button tooltips
+			this.ui.addSkillBtn.tooltip( {
+				'title' : 'Add'
+			} );
+
+			this.ui.updateSkillBtn.tooltip( {
+				'title' : 'Update'
+			} );
+
+			this.ui.deleteSkillBtn.tooltip( {
+				'title' : 'Delete'
+			} );
 		},
 
 		'showDescription' : function ( event ) {
-			event.preventDefault();
+			event.stopPropagation();
 
 			$( event.target ).popover( 'show' );
 		},
 
-		'addSkill' : function () {
+		'showTooltip' : function ( event ) {
+			event.stopPropagation();
 
+			$( event.target ).tooltip( 'show' );
 		},
 
-		'editSkill' : function () {
+		'addSkill' : function ( event ) {
+			event.stopPropagation();
 
+			this.model.set( {
+				'action'      : 'Create',
+				'name'        : '',
+				'description' : ''
+			} );
+
+			var CreateSkillView = new ManageSkillView( {
+				'model' : this.model
+			} );
+
+			CreateSkillView.render();
+		},
+
+		'updateSkill' : function ( event ) {
+			event.stopPropagation();
+
+			this.model.set( { 'action' : 'Update' } );
+
+			var UpdateSkillView = new ManageSkillView( {
+				'model' : this.model
+			} );
+
+			UpdateSkillView.render();
 		},
 
 		'deleteSkill' : function ( event ) {
-			var options = {
-				'title' : 'Manage Skills',
+			event.stopPropagation();
 
-				'message' : 'Message',
+			var self = this;
+
+			var options = {
+				'title' : 'Delete Skill',
+
+				'message' : 'Are you sure you want to delete ' + this.model.get( 'name' ) + '?',
 
 				'buttons' : {
 					'success' : {
 						'label'     : 'Delete',
 						'className' : 'btn-danger',
 						'callback'  : function () {
-							return console.log( 'test' );
+							self.model.destroy( {
+								'wait' : true,
+
+								'success' : function ( model, response ) {
+									self.$el.parent().remove();
+									console.log(self.$el);
+								},
+
+								'error' : function ( model, error ) {
+									console.log( 'Error ' + error.responseText );
+								}
+
+							} );
 						}
 					},
 
