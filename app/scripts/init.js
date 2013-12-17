@@ -27,6 +27,11 @@ require.config( {
 		'backbone.validation'     : '../bower_components/backbone-validation/dist/backbone-validation-amd',
 		'async'                   : '../bower_components/async/lib/async',
 		'spinjs'                  : '../bower_components/spinjs/spin',
+		'jquery-cookie'           : '../bower_components/jquery-cookie/jquery.cookie',
+
+		/* Tests libs */
+		'sinon'                   : '../bower_components/sinon/lib/sinon',
+		'sinon.chai'              : '../bower_components/sinon/lib/sinon-chai',
 
 		/* alias all marionette libs */
 		'marionette'              : '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',

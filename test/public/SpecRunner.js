@@ -12,6 +12,8 @@
 			// Test libs
 			'mocha'                    : 'bower_components/mocha/mocha',
 			'chai'                     : 'bower_components/chai/chai',
+			'sinon'                    : 'bower_components/sinon/lib/sinon',
+			'sinon.chai'               : 'bower_components/sinon-chai/lib/sinon-chai',
 
 			// Libraries and utility scripts
 			'jquery'                   : 'bower_components/jquery/jquery',
@@ -25,7 +27,7 @@
 			'backbone.validation'      : 'bower_components/backbone-validation/dist/backbone-validation-amd',
 			'text'                     : 'bower_components/requirejs-text/text',
 			'async'                    : 'bower_components/async/lib/async',
-			'jquery-cookie'            : 'bower_components/jquery.cookie/jquery.cookie',
+			'jquery-cookie'            : 'bower_components/jquery-cookie/jquery.cookie',
 			'modernizr'                : 'bower_components/modernizr/modernizr',
 			'fine-uploader'            : 'bower_components/fine-uploader/build/jquery.fineuploader',
 			'base64'                   : 'bower_components/base64', // *! utility to encode/decode
@@ -44,12 +46,14 @@
 
 			// Base application level classes
 			'App'                      : 'scripts/Application',
-			'Admin'                    : 'scripts/Admin',
+			'System'                   : 'scripts/System',
+			'User'					   : 'scripts/User',
 			'Communicator'             : 'scripts/Communicator',
 			'Vent'                     : 'scripts/Vent',
 			'RegionManager'            : 'scripts/RegionManager',
 			'Router'                   : 'scripts/routers/AppRouter',
-			'Controller'               : 'scripts/controllers/AppController'
+			'Controller'               : 'scripts/controllers/AppController',
+			'RequestResponse'          : 'scripts/RequestResponse'
 		},
 
 		'shim' : {

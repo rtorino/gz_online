@@ -1,12 +1,17 @@
 define( function( require ) {
 	'use strict';
 
-	var _                = require( 'underscore' );
-	var Spinner          = require( 'spinjs' );
-	var Backbone         = require( 'backbone' );
-	var Marionette       = require( 'marionette' );
-	var Vent             = require( 'Vent' );
-	var UserModel        = require( 'models/UserModel' );
+	var _          = require( 'underscore' );
+	var Spinner    = require( 'spinjs' );
+	var Backbone   = require( 'backbone' );
+	var Marionette = require( 'marionette' );
+
+	var Vent            = require( 'Vent' );
+	var RequestResponse = require('RequestResponse');
+
+	var Session   = require( 'models/SessionModel');
+	var UserModel = require( 'models/UserModel' );
+
 	var ErrorView        = require( 'views/ErrorView' );
 	var SignupLayoutTmpl = require( 'text!tmpl/views/layout/SignupLayout_tmpl.html' );
 
@@ -81,6 +86,14 @@ define( function( require ) {
 				options.error = function() {
 					this.trigger( 'ajaxSpinner', { 'spin': false } );
 				};
+
+				this.listenTo( user, 'sync', function() {
+					// Logged in user
+					Session.validate( {
+						'email'    : user.get( 'email' ),
+						'password' : user.get( 'password' )
+					} );
+				} );
 
 				user.save( null, options );
 

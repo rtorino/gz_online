@@ -1,13 +1,14 @@
 'use strict';
 
 exports.configs = {
-	'port': 9000,
-	'host': '127.0.0.1',
-	'rest': '/',
-	'mongodb': {
-		'hostname': 'localhost',
-		'port': 27017,
-		'db': 'gz'
+	'port'    : 9000,
+	'host'    : '127.0.0.1',
+	'rest'    : '/',
+	'salt'    : 'd631f66da93c5ff735d5604f0ffc313ff3817a2cf63c4e7b1d003f5675b87698',
+	'mongodb' : {
+		'hostname' : 'localhost',
+		'port'     : 27017,
+		'db'       : 'gz'
 	}
 };
 

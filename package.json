@@ -2,7 +2,7 @@
   "name": "gz-online",
   "version": "0.0.1",
   "scripts": {
-     "test": "grunt jshint --verbose"
+    "test": "grunt jshint --verbose"
   },
   "dependencies": {
     "express": "~3.4.6",
@@ -12,7 +12,9 @@
     "mongoose": "~3.8.1",
     "baucis": "latest",
     "express-hbs": "~0.2.0",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "node-uuid": "~1.4.1",
+    "validator": "~2.0.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

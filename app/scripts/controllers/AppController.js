@@ -1,18 +1,21 @@
 define( function( require ) {
 	'use strict';
 
-	var Marionette = require( 'marionette' );
-	var Backbone   = require( 'backbone' );
-	var _          = require('underscore');
+	var Marionette   = require( 'marionette' );
+	var Backbone     = require( 'backbone' );
+	var _            = require( 'underscore' );
+
+	var Session = require( 'models/SessionModel' );
 
 	var views = {
-		'SignupLayout' : require( 'views/layout/SignupLayout' ),
-		'ErrorView'    : require( 'views/ErrorView' ),
-		'NavLayout'    : require( 'views/layout/NavLayout' )
+		'SignupLayout': require( 'views/layout/SignupLayout' ),
+		'ErrorView': require( 'views/ErrorView' ),
+		'NavLayout': require( 'views/layout/NavLayout' )
 	};
 
 	var applications = {
-		'SystemApp' : require( 'System' )
+		'SystemApp' : require( 'System' ),
+		'UserApp'	: require( 'User')
 	};
 
 	return Marionette.Controller.extend( {
@@ -27,7 +30,13 @@ define( function( require ) {
 
 		showSignup: function( event ) {
 			var signupLayout = new views.SignupLayout();
-			this.App.content.show( signupLayout );
+			var content = this.App.content;
+
+			Session.token({
+				'success': function() {
+					content.show( signupLayout );
+				}
+			} );
 			this._setMenu();
 		},
 
@@ -35,9 +44,11 @@ define( function( require ) {
 		bootstrapSystemApp : function () {
 			this.bootstrapApp( 'System', applications.SystemApp );
 		},
-
+		bootstrapUserApp : function(){
+			this.bootstrapApp( 'User' , applications.UserApp);
+		},
 		// app helper function
-		bootstrapApp : function ( appName, app ) {
+		bootstrapApp: function( appName, app ) {
 			var self = this;
 
 			if ( !self[ appName ] ) {
@@ -46,12 +57,12 @@ define( function( require ) {
 					'regions' : {
 						'content' : self.App.content
 					},
-					'Vent' : self.Vent
+					'Vent': self.Vent
 				} );
 			}
 		},
 
-		_setMenu : function () {
+		_setMenu: function() {
 			this.App.menu.show( new views.NavLayout() );
 		}
 

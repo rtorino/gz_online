@@ -329,6 +329,7 @@ module.exports = function( grunt ) {
 			'connect:testserver',
 			'express:dev',
 			'exec',
+			'simplemocha',
 			'open',
 			'watch'
 		] );

@@ -54,22 +54,6 @@ define( function( require ) {
 
 			} );
 
-			it( 'should display error when password and verifyPassword do not match', function( done ) {
-				
-				var $el = view.$el;
-
-				view.ui.email.val('test.foo@globalzeal.net');
-				view.ui.password.val('Tests12');
-				view.ui.verifyPassword.val('Tests1');
-
-				$el.submit();
-
-				view.on( 'SignupLayout:error', function( errors ) {
-					done();
-				} );
-
-			} );
-
 		} );
 
 	} );

@@ -6,7 +6,9 @@ define( function () {
 		'specs' : [
 			'spec/collections/UsersCollectionTest.js',
 			'spec/controllers/AppControllerTest.js',
+			'spec/controllers/UserControllerTest.js',
 			'spec/models/UserModelTest.js',
+			'spec/models/SessionModelTest.js',
 			'spec/views/layout/SignupLayoutTest.js'
 		]
 	};
