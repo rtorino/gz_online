@@ -18,14 +18,14 @@ var UserSchema = new mongoose.Schema( {
 		'type'     : String,
 		'required' : true
 	},
-	'fName'    : String,
-	'lName'    : String,
-	// skills  : [ Skill.schema ],
-	'role'     : String,
-	'verified' : Number,
-	'salt'     : String
+	'fName'            : String,
+	'lName'            : String,
+	// skills          : [ Skill.schema ],
+	'role'             : String,
+	'verified'         : Number,
+	'salt'             : String,
+	'registrationDate' : Date
 } );
-
 
 // - Hashing passwords refer to this: http://davybrion.com/blog/2012/01/stop-storing-passwords-already/
 // - More info here: https://crackstation.net/hashing-security.htm

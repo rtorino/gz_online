@@ -5,10 +5,11 @@ define( function( require ) {
 
 	return Marionette.AppRouter.extend( {
 
-		'appRoutes' : {
-			'system*actions'   : 'bootstrapSystemApp',
-			'user*actions': 'bootstrapUserApp'
-
+		'appRoutes': {
+			'system*actions' : 'bootstrapSystemApp',
+			'user*actions'   : 'bootstrapUserApp',
+			'login'          : 'showLogin',
+			'signup'         : 'showSignup'
 		}
 	} );
 

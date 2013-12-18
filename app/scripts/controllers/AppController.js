@@ -1,21 +1,22 @@
 define( function( require ) {
 	'use strict';
 
-	var Marionette   = require( 'marionette' );
-	var Backbone     = require( 'backbone' );
-	var _            = require( 'underscore' );
+	var Marionette = require( 'marionette' );
+	var Backbone = require( 'backbone' );
+	var _ = require( 'underscore' );
 
 	var Session = require( 'models/SessionModel' );
 
 	var views = {
 		'SignupLayout': require( 'views/layout/SignupLayout' ),
 		'ErrorView': require( 'views/ErrorView' ),
-		'NavLayout': require( 'views/layout/NavLayout' )
+		'NavLayout': require( 'views/layout/NavLayout' ),
+		'LoginLayout': require( 'views/layout/LoginLayout' )
 	};
 
 	var applications = {
-		'SystemApp' : require( 'System' ),
-		'UserApp'	: require( 'User')
+		'SystemApp': require( 'System' ),
+		'UserApp': require( 'User' )
 	};
 
 	return Marionette.Controller.extend( {
@@ -25,14 +26,20 @@ define( function( require ) {
 			this.Vent = this.options.Vent;
 			_.bindAll( this );
 
-			this.Vent.on( 'App:start', this.showSignup );
+			this.Vent.on( 'App:start', this.showLogin );
+		},
+
+		showLogin: function( event ) {
+			var loginLayout = new views.LoginLayout();
+			this.App.content.show( loginLayout );
+			this._setMenu();
 		},
 
 		showSignup: function( event ) {
 			var signupLayout = new views.SignupLayout();
 			var content = this.App.content;
 
-			Session.token({
+			Session.token( {
 				'success': function() {
 					content.show( signupLayout );
 				}
@@ -41,12 +48,14 @@ define( function( require ) {
 		},
 
 		// sub applications bootstrap
-		bootstrapSystemApp : function () {
+		bootstrapSystemApp: function() {
 			this.bootstrapApp( 'System', applications.SystemApp );
 		},
-		bootstrapUserApp : function(){
-			this.bootstrapApp( 'User' , applications.UserApp);
+
+		bootstrapUserApp: function() {
+			this.bootstrapApp( 'User', applications.UserApp );
 		},
+
 		// app helper function
 		bootstrapApp: function( appName, app ) {
 			var self = this;
@@ -54,8 +63,8 @@ define( function( require ) {
 			if ( !self[ appName ] ) {
 				self[ appName ] = app;
 				self[ appName ].start( {
-					'regions' : {
-						'content' : self.App.content
+					'regions': {
+						'content': self.App.content
 					},
 					'Vent': self.Vent
 				} );

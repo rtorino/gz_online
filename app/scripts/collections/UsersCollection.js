@@ -3,12 +3,17 @@ define( function( require ) {
 
 	var Backbone = require( 'backbone' );
 	var UserModel = require( 'models/UserModel' );
+	var util = require( 'util' );
 
 	/* Return a collection class definition */
 	return Backbone.Collection.extend( {
 		initialize: function() {},
 
-		model: UserModel
+		model: UserModel,
+
+		'baucis': util.baucisFetch,
+
+		'url': '/users'
 
 	} );
 } );

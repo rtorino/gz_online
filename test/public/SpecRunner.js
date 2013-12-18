@@ -35,6 +35,8 @@
 			'shim'                     : 'bower_components/shim', // *! utility for object prototypes
 			'spinjs'                   : 'bower_components/spinjs/spin',
 			'MiddlewareRouter'         : 'scripts/MiddlewareRouter',
+			'util'					   : 'scripts/util',
+			'bootbox'				   : 'bower_components/bootbox/bootbox',
 
 			// root folders
 			'models'                   : 'scripts/models',

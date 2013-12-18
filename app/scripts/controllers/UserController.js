@@ -8,7 +8,6 @@ define( function( require ) {
 
 	// require models
 	var models = {
-
 		User: require( 'models/UserModel' )
 	};
 
@@ -20,16 +19,20 @@ define( function( require ) {
 	// require layouts
 	var layouts = {
 		User: require( 'views/layout/UserLayout' )
-
 	};
 
 	// require views
 	var views = {
-		UserMenuView    : require( 'views/item/UserMenuView' ),
-		UserSkillView	: require( 'views/item/UserSkillView' )
-
+		UserMenuView: require( 'views/item/UserMenuView' ),
+		UserSkillView: require( 'views/item/UserSkillView' ),
+		UserContentsView: require( 'views/composite/UserContentsView' ),
+		UserColleaguesView: require( 'views/item/UserColleaguesView' )
 	};
 
+	var globalVars = {
+		_id: '52aaba1a4a451895ea2b6da1',
+		_users: null
+	};
 	return Marionette.Controller.extend( {
 		initialize: function( options ) {
 			var self = this;
@@ -39,7 +42,6 @@ define( function( require ) {
 			_.each( options, function( value, key ) {
 				self[ key ] = value;
 			} );
-
 
 			this.showDefault();
 
@@ -51,13 +53,25 @@ define( function( require ) {
 			this.App.content.show( this.layout );
 		},
 
+		showProfile: function( id ) {
+			var User = new models.User( {
+				selectedMenu: 'Profile',
+				_id: id
+			} );
+
+			User.fetch( {
+				success: function( model, response, options ) {
+					console.log( response );
+				}
+			} );
+		},
+
 		showSkills: function() {
 			this._setActiveMenu();
 
 			var User = new models.User( {
 				selectedMenu: 'Skills'
 			} );
-
 
 			var view = new views.UserContentsView( {
 				model: User,
@@ -66,6 +80,51 @@ define( function( require ) {
 			} );
 
 			this.layout.contentRegion.show( view );
+		},
+
+		showColleagues: function() {
+			this._setActiveMenu();
+
+			//Sample id. This should be taken from the currently logged in user.
+			//var users = this._getUsers();
+
+			var User = new models.User( {
+				selectedMenu: 'Colleagues'
+			} );
+
+			var self = this;
+			var users = [];
+			User.fetch( {
+				'success': function( model, response, options ) {
+					for ( var key in response ) {
+						users.push( response[ key ] );
+					}
+
+					users = _.without( users, _.findWhere( users, {
+						'_id': globalVars._id
+					} ) );
+
+					_.each( users, function( u ) {
+						//console.log( u );
+						if ( u && u.registrationDate ) {
+							u.registrationDate = new Date( Date.parse( u.registrationDate ) );
+						}
+					} );
+
+					var view = new views.UserContentsView( {
+						model: User,
+						collection: new collections.Users( users ),
+						itemView: views.UserColleaguesView
+					} );
+
+					self.layout.contentRegion.show( view );
+				},
+				'error': function() {
+					return null;
+				}
+			} );
+
+
 		},
 
 		_getLayout: function() {
@@ -116,8 +175,5 @@ define( function( require ) {
 				$( menuOptions[ 0 ] ).parent().addClass( 'active' );
 			}
 		}
-
-
 	} );
-
 } );

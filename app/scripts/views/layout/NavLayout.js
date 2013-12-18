@@ -33,7 +33,7 @@ define( function ( require ) {
 
 		'onRender' : function () {
 			var UserModel = new User( {
-				email : 'super.admin@globalzeal.net'
+				email : ''
 			} );
 
 			this.navMenu.show( new SystemNavView( { model : UserModel } ) );

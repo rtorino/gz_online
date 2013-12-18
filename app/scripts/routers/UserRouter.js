@@ -5,9 +5,10 @@ define( function( require ) {
 
 	return Marionette.AppRouter.extend( {
 		'appRoutes': {
-			'user/colleagues': '',
 			'user/skills': 'showSkills',
-			'user/update': ''
+			'user/colleagues': 'showColleagues',
+			'user/profile': 'showProfile',
+			'user/:id': 'showProfile'
 		}
 	} );
 

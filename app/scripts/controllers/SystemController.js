@@ -1,172 +1,166 @@
-define( function ( require ) {
+define( function( require ) {
 	'use strict';
 
-	var _          = require( 'underscore' );
-	var $          = require( 'jquery' );
-	var Backbone   = require( 'backbone' );
+	var _ = require( 'underscore' );
+	var $ = require( 'jquery' );
+	var Backbone = require( 'backbone' );
 	var Marionette = require( 'marionette' );
 
 	// require models
 	var models = {
-		User   : require('models/UserModel')
+		User: require( 'models/UserModel' )
 		//Skills : require('models/SkillModel'),
 	};
 
 	// require collections
 	var collections = {
-		Users : require( 'collections/UsersCollection' )
+		Users: require( 'collections/UsersCollection' )
 	};
 
 	// require layouts
 	var layouts = {
-		System : require( 'views/layout/SystemLayout' )
+		System: require( 'views/layout/SystemLayout' )
 	};
 
 	// require views
 	var views = {
-		SystemMenuView     : require( 'views/item/SystemMenuView' ),
-		SystemContentsView : require( 'views/composite/SystemContentsView' ),
-		SystemUserView     : require( 'views/item/SystemUserView' ),
-		SystemAssessorView : require( 'views/item/SystemAssessorView' ),
-		SystemSkillView    : require( 'views/item/SystemSkillView' )
+		SystemMenuView: require( 'views/item/SystemMenuView' ),
+		SystemContentsView: require( 'views/composite/SystemContentsView' ),
+		SystemUserView: require( 'views/item/SystemUserView' ),
+		SystemAssessorView: require( 'views/item/SystemAssessorView' ),
+		SystemSkillView: require( 'views/item/SystemSkillView' )
 	};
 
-	return Marionette.Controller.extend({
-		initialize : function ( options ) {
+	return Marionette.Controller.extend( {
+		initialize: function( options ) {
 			var self = this;
 
 			_.bindAll( this );
 
-			_.each( options, function ( value, key ) {
+			_.each( options, function( value, key ) {
 				self[ key ] = value;
-			});
+			} );
 
 			this.showDefault();
 
 			return this;
 		},
 
-		showDefault : function () {
+		showDefault: function() {
 			this.layout = this._getLayout();
 			this.App.content.show( this.layout );
 		},
 
-		showUsers : function () {
+		showUsers: function() {
 			this._setActiveMenu();
+			var self = this;
+			var User = new models.User( {
+				selectedMenu: 'Users'
+			} );
 
-			var users = [
-				{
-					_id   : 0,
-					fName : 'Jerome',
-					lName : 'Ramos'
-				},
-				{
-					_id   : 1,
-					fName : 'Rocky',
-					lName : 'Coronel'
-				},
-				{
-					_id   : 2,
-					fName : 'Raymond',
-					lName : 'Torino'
+			var Users = new collections.Users();
+
+			// var self = this;
+
+			Users.baucis( {
+				'conditions': {
+					'role': 2
 				}
-			];
+			} ).then( function( response ) {
+				var view = new views.SystemContentsView( {
+					model: User,
+					collection: new collections.Users( response ),
+					itemView: views.SystemUserView
+				} );
 
-			var User = new models.User( { selectedMenu : 'Users' } );
-
-			var view = new views.SystemContentsView( {
-				model      : User,
-				collection : new collections.Users( users ),
-				itemView   : views.SystemUserView
+				self.layout.contentRegion.show( view );
 			} );
-
-			this.layout.contentRegion.show( view );
 		},
 
-		showAssessors : function () {
+		showAssessors: function() {
 			this._setActiveMenu();
 
-			var assessors = [
-				{
-					_id   : 0,
-					fName : 'James',
-					lName : 'Santos'
-				},
-				{
-					_id   : 1,
-					fName : 'Elizar',
-					lName : 'Pepino'
-				},
-				{
-					_id   : 2,
-					fName : 'George',
-					lName : 'Cordero'
-				}
-			];
+			var assessors = [ {
+				_id: 0,
+				fName: 'James',
+				lName: 'Santos'
+			}, {
+				_id: 1,
+				fName: 'Elizar',
+				lName: 'Pepino'
+			}, {
+				_id: 2,
+				fName: 'George',
+				lName: 'Cordero'
+			} ];
 
-			var User = new models.User( { selectedMenu : 'Assessors' } );
+			var User = new models.User( {
+				selectedMenu: 'Assessors'
+			} );
 
 			var view = new views.SystemContentsView( {
-				model      : User,
-				collection : new collections.Users( assessors ),
-				itemView   : views.SystemAssessorView
+				model: User,
+				collection: new collections.Users( assessors ),
+				itemView: views.SystemAssessorView
 			} );
 
 			this.layout.contentRegion.show( view );
 		},
 
-		showSkills : function () {
+		showSkills: function() {
 			this._setActiveMenu();
 
-			var User = new models.User( { selectedMenu : 'Skills' } );
+			var User = new models.User( {
+				selectedMenu: 'Skills'
+			} );
 
 			var view = new views.SystemContentsView( {
-				model      : User,
-				collection : new collections.Users(  ),
-				itemView   : views.SystemSkillView
+				model: User,
+				collection: new collections.Users(),
+				itemView: views.SystemSkillView
 			} );
 
 			this.layout.contentRegion.show( view );
 		},
 
-		_getLayout : function () {
+		_getLayout: function() {
 			var systemLayout = new layouts.System();
 
-			this.listenTo( systemLayout, 'render', function () {
+			this.listenTo( systemLayout, 'render', function() {
 				this._showMenuAndContent( systemLayout );
 			}, this );
 
 			return systemLayout;
 		},
 
-		_showMenuAndContent : function () {
+		_showMenuAndContent: function() {
 			this._addMenu( this.layout.menuRegion );
 
 			this.showUsers( this.layout.contentRegion, 'Users' );
 		},
 
-		_addMenu : function () {
+		_addMenu: function() {
 			var User = new models.User( {
-				usersCtr     : 3,
-				assessorsCtr : 3,
-				skillsCtr    : 3
+				usersCtr: 3,
+				assessorsCtr: 3,
+				skillsCtr: 3
 			} );
 
 			this.menu = new views.SystemMenuView( {
-				model : User
+				model: User
 			} );
 
 			this.layout.menuRegion.show( this.menu );
 		},
 
-		_setActiveMenu : function () {
+		_setActiveMenu: function() {
 			var currentRoute = '#' + Backbone.history.fragment;
-			var menuOptions  = this.menu.ui.menuOptions;
-			var hashes       = [];
+			var menuOptions = this.menu.ui.menuOptions;
+			var hashes = [];
 
 			menuOptions.parent().siblings().removeClass( 'active' );
 
-			_.each( menuOptions, function ( value, key ) {
+			_.each( menuOptions, function( value, key ) {
 				hashes.push( value.hash );
 
 				if ( currentRoute === value.hash ) {

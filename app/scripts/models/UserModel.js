@@ -13,30 +13,35 @@ define( function( require ) {
 
 	/* Return a model class definition */
 	return Backbone.Model.extend( {
+		'idAttribute': '_id',
+
 		'initialize': function() {},
 
 		'defaults': {},
 
 		'validation': {
 			'email': {
-				'pattern'  : 'email',
-				'required' : true,
-				'msg'      : 'Please enter a valid globalzeal email.'
+				'pattern': 'email',
+				'required': true,
+				'msg': 'Please enter a valid globalzeal email.'
 			},
 
-			'password': [
-				{
-					'minLength' : 6,
-					'msg'       : 'Password length should be at least 6 characters.'
-				},
-				{
-					'pattern' : 'password',
-					'msg'     : 'Password should contain at least 1 lowercase, 1 uppercase and 1 numeric character.'
-				}
-			]
+			'password': [ {
+				'minLength': 6,
+				'msg': 'Password length should be at least 6 characters.'
+			}, {
+				'pattern': 'password',
+				'msg': 'Password should contain at least 1 lowercase, 1 uppercase and 1 numeric character.'
+			} ]
 		},
 
-		'url': '/users'
+		'url': function() {
+			if ( this.isNew() ) {
+				return '/users';
+			} else {
+				return '/users/' + this.id;
+			}
+		}
 
 	} );
 } );

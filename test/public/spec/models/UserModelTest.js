@@ -21,7 +21,7 @@ define( function( require ) {
 
 		it( 'should save', function( done ) {
 			var user = new User( {
-				'id': 1,
+				'_id': 1,
 				'email': 'test.foo@globalzeal.net',
 				'password': 'Testpass1',
 				'fname': 'Foo',
@@ -41,7 +41,7 @@ define( function( require ) {
 
 		it( 'should fetch', function( done ) {
 			var user = new User( {
-				'id': 1
+				'_id': 1
 			} );
 
 			user.fetch( {
@@ -61,7 +61,7 @@ define( function( require ) {
 			beforeEach( function() {
 				// Valid user attributes
 				user = new User( {
-					'id': 2,
+					'_id': 2,
 					'email': 'test.foo@globalzeal.net',
 					'password': 'Testpass123'
 				} );
