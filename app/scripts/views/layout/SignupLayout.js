@@ -78,28 +78,27 @@ define( function( require ) {
 			var verifyPassword = this.ui.verifyPassword.val();
 
 			if ( password === verifyPassword ) {
-				user = new UserModel( {
+				user = new UserModel();
+
+				user.set( {
 					'email': email,
 					'password': password
+				}, {
+					'validate': true
 				} );
-
-				options.error = function() {
-					this.trigger( 'ajaxSpinner', { 'spin': false } );
-				};
-
-				this.listenTo( user, 'sync', function() {
-					// Logged in user
-					Session.validate( {
-						'email'    : user.get( 'email' ),
-						'password' : user.get( 'password' )
-					} );
-				} );
-
-				user.save( null, options );
-
+				
 				user.on( 'validated:valid', function() {
 					self.trigger( 'ajaxSpinner', {
 						'spin': true
+					} );
+
+					Session.fetch( {
+						'email'    : user.get( 'email' ),
+						'password' : user.get( 'password' ),
+						'signup'   : true,
+						'error'    : function() {
+							self.trigger( 'ajaxSpinner', { 'spin': false } );
+						}
 					} );
 				} );
 

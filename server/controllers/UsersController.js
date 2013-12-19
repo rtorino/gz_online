@@ -1,29 +1,27 @@
 'use strict';
 
-var express = require( 'express' );
-var auth	= require( '../middlewares/authentication' );
-var User    = require( '../schemas/UsersSchema' );
-var config  = require( '../config' ).configs;
+var csrf        = require( 'express' ).csrf;
+var basicAuth   = require( '../middlewares/basicAuthentication' );
+var sessionAuth = require( '../middlewares/sessionAuthentication' );
+var User        = require( '../schemas/UsersSchema' );
+var config      = require( '../config' ).configs;
 
 module.exports = function( baucis ) {
 	var controller = baucis.rest( {
 		singular: 'User'
 	} );
 
-	controller.use( '/token', express.csrf() );
-	controller.use( '/token', auth() );
-	controller.use( '/login', express.csrf() );
-	controller.use( '/login', auth() );
-
-	controller.get( '/token', function( request, response ) {
-		if ( !request.csrfToken ) {
-			return response.send( 403 );
-		}
-		response.send( 200, { 'token': request.csrfToken() } );
-	} );
+	// Middlewares
+	controller.use( '/token', csrf() );
+	controller.use( '/login', csrf() );
+	controller.use( '/login', basicAuth() );
+	controller.use( '/login', sessionAuth() );
+	controller.use( '/signup', csrf() );
+	controller.use( '/signup', basicAuth() );
 
 	controller.query( 'collection', 'get', function( request, response, next ) {
 		var query = request.baucis.query;
+		// Show only the following fields
 		query.select( 'email username fName lName role verified' );
 		next();
 	} );
@@ -34,14 +32,16 @@ module.exports = function( baucis ) {
 		next();
 	} );
 
-	controller.query( 'collection', 'head', function( request, response, next ) {
-		next();
-	} );
+	// Require session auth on following methods
+	controller.request( 'collection', 'post put del', sessionAuth() );
+	controller.request( 'instance', 'post put del', sessionAuth() );
 
-	controller.documents( 'collection', 'post put', function( request, response, next ) {
-		request.baucis.documents.password = undefined;
-		request.baucis.documents.salt = undefined;
-		next();
+	// Return CSRF token
+	controller.get( '/token', function( request, response ) {
+		if ( !request.csrfToken ) {
+			return response.send( 403 );
+		}
+		response.send( 200, { '_csrf': request.csrfToken() } );
 	} );
 
 	// Need to refactor and use findByIdAndUpdate instead
@@ -92,29 +92,44 @@ module.exports = function( baucis ) {
 
 	} );
 
-	controller.post( '/login', function( request, response ) {
+	controller.post( '/signup', function( request, response ) {
+		User.create( request.body, function( error, doc ) {
+			if ( error ) {
+				return response.send( 500 );
+			}
+			doc.password = undefined;
+			doc.salt = undefined;
+
+			response.send( 201, doc );
+		} );
+	} );
+
+	controller.get( '/login', function( request, response ) {
 		if ( !request.body.email ) {
 			return response.send( 500 );
 		}
 
 		User.findOne( {
 			'email': request.body.email.trim()
-		}, function( err, doc ) {
+		} ).lean().exec( function( err, doc ) {
 			var user, valid;
 
 			if ( err ) {
-				return response.send( 500 );
+				return response.send( 500, err.message );
 			}
 
 			if ( !doc ) {
-				return response.send( 404 );
+				return response.send( 401, 'Unauthorized' );
 			}
 
 			user = new User( doc );
 			valid = user.isValidPassword( request.body.password );
 
 			if ( valid ) {
-				response.send( 200, { 'accessToken': request.authToken() } );
+				doc.password = undefined;
+				doc.salt = undefined;
+				doc.accessToken = request.authToken();
+				response.send( 200, doc );
 			} else {
 				response.send( 404 );
 			}

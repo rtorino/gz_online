@@ -1,12 +1,21 @@
 'use strict';
 
 /*
-*	Connect's CSRF middleware
-*	
+*	Implementation is based on connect's CSRF middleware
 */
 
 var uid    = require( 'node-uuid' );
 var crypto = require( 'crypto' );
+
+var SALTCHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+function generateSalt( length ) {
+	var i, r = [];
+	for (i = 0; i < length; ++i) {
+		r.push(SALTCHARS[Math.floor(Math.random() * SALTCHARS.length)]);
+	}
+	return r.join('');
+}
 
 function createHash( salt, secret ) {
 	return salt + crypto
@@ -15,8 +24,8 @@ function createHash( salt, secret ) {
 		.digest( 'base64' );
 }
 
-function saltedToken( salt, secret ) {
-	return createHash( salt, secret );
+function saltedToken( secret ) {
+	return createHash( generateSalt( 10 ) , secret );
 }
 
 function checkToken( token, secret ) {
@@ -30,6 +39,11 @@ function defaultValue( req ) {
 	return ( req.body && req.body._auth ) || ( req.query && req.query._auth ) || ( req.headers[ 'authentication' ] );
 }
 
+function fail( res ) {
+	res.statusCode = 403;
+	res.end( 'Forbidden' );
+}
+
 module.exports = function auth( options ) {
 	// Supports user submitted value
 	options = options || {};
@@ -41,20 +55,14 @@ module.exports = function auth( options ) {
 		function createToken( secret ) {
 			var token;
 
-			if ( !req.csrfToken ) {
-				return next( new Error( 403 ) );
-			}
-
 			req.authToken = function authToken() {
-				var csrf = req.csrfToken();
-				return token || ( token = saltedToken( csrf, secret ) );
+				return token || ( token = saltedToken( secret ) );
 			};
 
 			// ignore these methods including login and signup
 			if ( 'GET' === req.method ||
 				 'HEAD' === req.method ||
-				 'OPTIONS' === req.method ||
-				 ( 'POST' === req.method && ( req.url === '/' || req.url === '/users/login' ) )
+				 'OPTIONS' === req.method
 				) {
 					return next();
 			}
@@ -64,7 +72,7 @@ module.exports = function auth( options ) {
 
 			// check
 			if ( !checkToken( val, secret ) ) {
-				return next( new Error( 403 ) );
+				return fail( res );
 			}
 
 			next();

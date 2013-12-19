@@ -49,13 +49,14 @@ require.config( {
 		'bootbox'             : '../bower_components/bootbox/bootbox',
 		'sinon'               : '../bower_components/sinon/lib/sinon',
 		'sinon.chai'          : '../bower_components/sinon/lib/sinon-chai',
-
 		'marionette'          : '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',
 		'backbone.wreqr'      : '../bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
 		'backbone.babysitter' : '../bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
-		'bootstrap'           : 'vendor/bootstrap',
+		'base64'              : '../bower_components/base64',
+		'bootstrap'           : '../bower_components/bootstrap/dist/js/bootstrap',
 		'text'                : '../bower_components/requirejs-text/text',
 		'tmpl'                : '../templates',
+
 		'models'              : 'models',
 		'collections'         : 'collections',
 		'views'               : 'views',

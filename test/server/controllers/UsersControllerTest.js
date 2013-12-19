@@ -1,25 +1,33 @@
 'use strict';
 
 var fixtures = require( '../fixtures' );
-var chai     = require( 'chai' );
-var expect   = chai.expect;
-var should   = chai.should();
+var chai = require( 'chai' );
+var expect = chai.expect;
+var should = chai.should();
 
 var request;
 var user;
 var token;
+var accessToken;
 
-// Replace token with an api-key of some sort
 describe( 'REST - User', function() {
 
 	before( function( done ) {
 		fixtures.init( 'Users', function( error, agent ) {
+			if ( error ) {
+				return done( error );
+			}
+
 			request = agent;
 			request
 				.get( '/users/token' )
 				.set( 'Accept', 'application/json' )
 				.end( function( error, response ) {
-					token = response.body.token;
+					if ( error ) {
+						return done( error );
+					}
+
+					token = response.body._csrf;
 					done();
 				} );
 		} );
@@ -31,38 +39,74 @@ describe( 'REST - User', function() {
 		} );
 	} );
 
-	describe( 'GET', function() {
-		var error, response, body;
-
-		beforeEach( function( done ) {
+	describe( 'Signup', function() {
+		
+		it( 'should create user on signup', function( done ) {
+			// Base64( 'test.user@globalzeal.net:testpass' )
+			var authToken = 'Basic dGVzdC51c2VyQGdsb2JhbHplYWwubmV0OnRlc3RwYXNz';
 			request
-				.get( '/users' )
-				.set( 'Accept', 'application/json' )
-				.end( function( responseError, responseObject ) {
-					error = responseError;
-					response = responseObject;
-					body = responseObject.body;
+				.post( '/users/signup' )
+				.set( 'X-CSRF-Token', token )
+				.set( 'Authorization', authToken )
+				.end( function( error, response ) {
+					if ( error ) {
+						return done( error );
+					}
+					expect( response.status ).to.equal( 201 );
+					done();
+				} );
+		} );
 
-					user = body;
+	} );
+
+	describe( 'Login', function() {
+
+		it( 'should login user', function( done ) {
+			// Base64( 'test.user@globalzeal.net:testpass' )
+			var authToken = 'Basic dGVzdC51c2VyQGdsb2JhbHplYWwubmV0OnRlc3RwYXNz';
+			request
+				.get( '/users/login' )
+				.set( 'X-CSRF-Token', token )
+				.set( 'Authorization', authToken )
+				.end( function( error, response ) {
+					if ( error ) {
+						return done( error );
+					}
+					accessToken = response.body.accessToken;
 
 					done();
 				} );
 		} );
 
-		it( 'should fetch all users', function() {
-			chai.expect( response.body ).not.to.be.a( 'null' );
+		it( 'should return accessToken', function () {
+			expect( accessToken ).to.exist;
 		} );
+
+	} );
+
+	describe( 'GET', function() {
+
+		it( 'should fetch all users', function( done ) {
+			request
+				.get( '/users' )
+				.set( 'Accept', 'application/json' )
+				.end( function( error, response ) {
+					chai.expect( response.body ).not.to.be.a( 'null' );
+					done();
+				} );
+		} );
+
 	} );
 
 	describe( 'POST', function() {
 		var testData = {
-			'email'    : 'john.doe@globalzeal.net',
-			'password' : 'oednhoj',
-			'username' : 'john.doe',
-			'fName'    : 'John',
-			'lName'    : 'Doe',
-			'role'     : 'admin',
-			'verified' : 0
+			'email': 'john.doe@globalzeal.net',
+			'password': 'oednhoj',
+			'username': 'john.doe',
+			'fName': 'John',
+			'lName': 'Doe',
+			'role': 'admin',
+			'verified': 0
 		};
 
 		var error, response, body;
@@ -71,16 +115,15 @@ describe( 'REST - User', function() {
 			request
 				.post( '/users' )
 				.send( testData )
-				.set( 'X-CSRF-Token', token )
+				.set( 'Authentication', accessToken )
 				.expect( 'Content-Type', /json/ )
 				.expect( 200 )
-				.end( function( responseError, responseObject ) {
-					error = responseError;
-					response = responseObject;
-					body = responseObject.body;
+				.end( function( err, resp ) {
+					error = err;
+					response = resp;
+					body = resp.body;
 
 					user = body;
-
 					done();
 				} );
 		} );
@@ -119,12 +162,12 @@ describe( 'REST - User', function() {
 		} );
 
 		it( 'should return the correct values', function() {
-			body.email.should.be.equal( user.email );
-			body.username.should.be.equal( user.username );
-			body.fName.should.be.equal( user.fName );
-			body.lName.should.be.equal( user.lName );
-			body.role.should.be.equal( user.role );
-			body.verified.should.be.equal( user.verified );
+			body.email.should.be.equal( testData.email );
+			body.username.should.be.equal( testData.username );
+			body.fName.should.be.equal( testData.fName );
+			body.lName.should.be.equal( testData.lName );
+			body.role.should.be.equal( testData.role );
+			body.verified.should.be.equal( testData.verified );
 		} );
 
 		it( 'should save a user with globalzeal email account', function( done ) {
@@ -134,25 +177,24 @@ describe( 'REST - User', function() {
 					email: 'test.foo@globalzeal.net',
 					password: 'testpass'
 				} )
-				.set( 'X-CSRF-Token', token )
+				.set( 'Authentication', accessToken )
 				.expect( 201 )
-				.end( function( error ) {
+				.end( function( error, response ) {
 					if ( error ) {
 						return done( error );
 					}
-
 					done();
 				} );
 		} );
 
 		it( 'should have a POST-login route', function( done ) {
+			// Base64( 'test.user@globalzeal.net:testpass' )
+			var authToken = 'Basic dGVzdC51c2VyQGdsb2JhbHplYWwubmV0OnRlc3RwYXNz';
 			request
 				.post( '/users/login' )
-				.send( {
-					'email': 'test.email@globalzeal.net'
-				} )
 				.set( 'Accept', 'application/json' )
 				.set( 'X-CSRF-Token', token )
+				.set( 'Authorization', authToken )
 				.end( function( err, res ) {
 					if ( err ) {
 						return done( err );
@@ -162,18 +204,19 @@ describe( 'REST - User', function() {
 				} );
 		} );
 
-		it( 'should not allow blank email address', function( done ) {
+		it( 'should not allow blank email address on login', function( done ) {
+			// Base64( ':testpass')
+			var authToken = 'Basic OnRlc3RwYXNz';
 			request
 				.post( '/users/login' )
-				.send( {
-					email: '      ',
-				} )
 				.set( 'X-CSRF-Token', token )
+				.set( 'Authorization', authToken )
 				.end( function( error, response ) {
 					if ( error ) {
 						return done( error );
 					}
-					chai.expect( response.statusCode ).to.be.equal( 404 );
+					expect( response.headers ).to.have.property( "www-authenticate" );
+					expect( response.statusCode ).to.be.equal( 401 );
 					done();
 				} );
 		} );
@@ -184,13 +227,13 @@ describe( 'REST - User', function() {
 		var url, error, response, body;
 
 		var testData = {
-			email    : 'john.doe@globalzeal.net',
-			username : 'johnny',
-			password : 'oednhoj',
-			fName    : 'john',
-			lName    : 'doe',
-			role     : 'admin',
-			verified : 0
+			email: 'john.doe@globalzeal.net',
+			username: 'johnny',
+			password: 'oednhoj',
+			fName: 'john',
+			lName: 'doe',
+			role: 'admin',
+			verified: 0
 		};
 
 		before( function( done ) {
@@ -199,8 +242,8 @@ describe( 'REST - User', function() {
 			request
 				.put( url )
 				.send( testData )
+				.set( 'Authentication', accessToken )
 				.expect( 'Content-Type', /json/ )
-				.set( 'X-CSRF-Token', token )
 				.expect( 200 )
 				.end( function( error, resp ) {
 					error = error;
@@ -241,86 +284,8 @@ describe( 'REST - User', function() {
 			body.verified.should.be.equal( body.verified );
 		} );
 
-		// it( 'should be able to edit password', function( done ) {
-		// 	var updateUserUrl = '/users/password/' + user._id;
+		it( 'should be able to edit password' );
 
-		// 	var updateUser = {
-		// 		'password'	: 'hello123'
-		// 	};
-
-		// 	request.put( updateUserUrl )
-		// 		.send( updateUser )
-		// 		.end( function(responseError, responseObject) {
-		// 			responseObject.statusCode.should.equal( 200 );
-		// 			responseObject.body.message.should.equal( 'Password updated' );
-
-		// 			done();
-		// 		} );
-
-		// } );
-
-		describe( 'Errors, Unauthorized', function() {
-			// This requires hashing the current previous password
-			// Back-end controller needs updating
-
-			// it( 'should not be able to edit password because current password is not correct', function( done ) {
-			// 	var updateUserUrl = '/users/password/' + user._id;
-
-			// 	var updateUser = {
-			// 		'email'		: 'john.doe@globalzeal.net',
-			// 		'username'	: 'john.doe',
-			// 		'fName'		: 'john',
-			// 		'lName'		: 'doe',
-			// 		'role'		: 'admin',
-			// 		'verified'	: 0,
-			// 		'password1'	: 'thisisold',
-			// 		'password2'	: 'thisisold',
-			// 		'password'	: 'csdsdfsdfs'
-
-			// 	};
-
-			// 	request.put( updateUserUrl )
-			// 		.send( updateUser )
-			// 		.end( function(responseError, responseObject) {
-			// 			responseObject.statusCode.should.equal( 400 );
-			// 			responseObject.body.message.should.equal( 'Incorrect Password');
-
-			// 			done();
-			// 		} );
-			// } );
-
-			// I think we don't need to check for similar passwords in the server
-			// This should be left to the client as part of UX
-			// c/o Francis
-
-			// it( 'should not be able to edit password because password1 does not match password2', function( done ) {
-			// 	var updateUserUrl = '/users/password/' + user._id;
-
-			// 	var updateUser = {
-			// 		'email'		: 'john.doe@globalzeal.net',
-			// 		'username'	: 'john.doe',
-			// 		'fName'		: 'john',
-			// 		'lName'		: 'doe',
-			// 		'role'		: 'admin',
-			// 		'verified'	: 0,
-			// 		'password1'	: 'thisisold',
-			// 		'password2'	: 'fddfd',
-			// 		'password'	: 'thisisold'
-
-			// 	};
-
-			// 	request
-			// 		.put( updateUserUrl )
-			// 		.send( updateUser )
-			// 		.end( function(responseError, responseObject) {
-			// 			responseObject.statusCode.should.equal( 400 );
-			// 			responseObject.body.message.should.equal( 'Passwords not match');
-
-			// 			done();
-			// 		} );
-
-			// } );
-		} );
 	} );
 
 	describe( 'DELETE', function() {
@@ -330,7 +295,7 @@ describe( 'REST - User', function() {
 			url = '/users/' + user._id;
 			request
 				.del( url )
-				.set( 'X-CSRF-Token', token )
+				.set( 'Authentication', accessToken )
 				.end( function( responseError, responseObject ) {
 					error = responseError;
 					response = responseObject;

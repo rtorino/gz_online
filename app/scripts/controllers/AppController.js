@@ -2,10 +2,11 @@ define( function( require ) {
 	'use strict';
 
 	var Marionette = require( 'marionette' );
-	var Backbone = require( 'backbone' );
-	var _ = require( 'underscore' );
+	var Backbone   = require( 'backbone' );
+	var _          = require( 'underscore' );
 
 	var Session = require( 'models/SessionModel' );
+	var Reqres  = require( 'RequestResponse' );
 
 	var views = {
 		'SignupLayout': require( 'views/layout/SignupLayout' ),
@@ -31,7 +32,20 @@ define( function( require ) {
 
 		showLogin: function( event ) {
 			var loginLayout = new views.LoginLayout();
-			this.App.content.show( loginLayout );
+			var content = this.App.content;
+
+			if ( !Reqres.request( 'sessionAuthenticated' ) ) {
+				Session.token( {
+					'success': function() {
+						content.show( loginLayout );
+					},
+					'error': function() {
+						// Show some error
+					}
+				} );
+			} else {
+				this.App.router.navigate( 'signup' );
+			}
 			this._setMenu();
 		},
 

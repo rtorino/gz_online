@@ -1,15 +1,14 @@
 define( function( require ) {
 	'use strict';
 
-	var _ = require( 'underscore' );
-	//var $ = require( 'jquery' );
-	var Backbone = require( 'backbone' );
+	var _          = require( 'underscore' );
+	var Backbone   = require( 'backbone' );
 	var Marionette = require( 'marionette' );
+	var Vent       = require( 'Vent' );
+	var UserModel  = require( 'models/UserModel' );
+	var Session    = require( 'models/SessionModel' );
 
-	var Vent = require( 'Vent' );
-	var UserModel = require( 'models/UserModel' );
-	var ErrorView = require( 'views/ErrorView' );
-
+	var ErrorView       = require( 'views/ErrorView' );
 	var LoginLayoutTmpl = require( 'text!tmpl/views/layout/LoginLayout_tmpl.html' );
 
 	/* Return a ItemView class definition */
@@ -43,13 +42,18 @@ define( function( require ) {
 			var email = this.ui.email.val();
 			var password = this.ui.password.val();
 
-			return false;
-		},
+			Session.fetch( {
+				'email'    : email,
+				'password' : password,
+				'success'  : function( resp ) {
+					console.log( resp );
+				},
+				'error'    : function( xhr, status, error ) {
+					console.log( error );
+				}
+			} );
 
-		/* on render callback */
-		'onRender' : function() {
-			console.log( 'Login Layout rendered' );
+			return false;
 		}
 	} );
-
 } );

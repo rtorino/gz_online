@@ -11,22 +11,35 @@ define( function( require ) {
 	var Cookie     = require( 'jquery-cookie' );
 	var Backbone   = require( 'backbone' );
 	var Marionette = require( 'marionette' );
-	var reqres     = require( 'RequestResponse' );
+	var Base64     = require( 'base64' );
+	var Reqres     = require( 'RequestResponse' );
 	var Vent       = require( 'Vent' );
 
 	var Session = Backbone.Model.extend( {
 
 		'idAttribute' : '_id',
 
-		// currently only read and update are possible
 		'methodToURL' : {
-			'create' : '/users/login',
-			'update' : '/users/5048d2e5fbdac48208000034'
+			'read'   : '/users/login',
+			'create' : '/users/signup'
 		},
 
-		// create and stores the authorization token in the `$.ajaxSettings`
+		// create and stores the authentication token generated in the server in `$.ajaxSettings`
 		'_setupAjaxHeaders' : function ( token ) {
-			$.ajaxSetup( { 'headers' : { 'Authorization' : token } } );
+			$.ajaxSetup( { 'headers' : { 'Authentication' : token } } );
+		},
+
+		// creates and returns Base64 encoded hash
+		'_createBase64Hash' : function ( user, password ) {
+			return Base64.encode( user + ':' + password );
+		},
+
+		'_createBasicAuthHeader': function( authBasicToken ) {
+			if ( authBasicToken ) {
+				return 'Basic ' + authBasicToken;
+			} else {
+				return '';
+			}
 		},
 
 		// set values as cookies in the `/` path
@@ -43,7 +56,7 @@ define( function( require ) {
 		'initialize': function() {
 			// This will respond a boolean (true/false) if a module
 			// fires a request( 'sessionAuthenticated' )
-			reqres.setHandler( 'sessionAuthenticated', this.isAuthenticated );
+			Reqres.setHandler( 'sessionAuthenticated', this.isAuthenticated, this );
 
 			// Unbind to global RequestResponse
 			this.listenTo( this, 'destroy', this.unbindHandlers );
@@ -54,26 +67,24 @@ define( function( require ) {
 		},
 
 		'unbindHandlers': function() {
-			reqres.removeHandler( 'sessionAuthenticated' );
+			Reqres.removeHandler( 'sessionAuthenticated' );
 		},
 
-		'validate': function( options ) {
+		'fetch': function( options ) {
 			var model = this;
 
-			if ( this.csrfToken && ( options.username || options.email ) && options.password ) {
+			if ( this.get( 'csrfToken' ) && ( options.username || options.email ) && options.password ) {
 
 				var done = options.success;
 				options.parse = options.parse !== void 0;
-
-				this.set( 'username', options.username || '' );
-				this.set( 'email', options.email );
-				this.set( 'password', options.password );
+				options.authBasicToken = options.authBasic || this._createBase64Hash( options.email, options.password );
 
 				delete options.username;
 				delete options.password;
 
 				options.beforeSend = function( xhr ) {
-					xhr.setRequestHeader( 'X-CSRF-Token',  model.csrfToken );
+					xhr.setRequestHeader( 'X-CSRF-Token',  model.get( 'csrfToken' ) );
+					xhr.setRequestHeader( 'Authorization', model._createBasicAuthHeader( options.authBasicToken ) );
 				};
 
 				options.success = function( resp ) {
@@ -91,7 +102,11 @@ define( function( require ) {
 					model.persistSession( model.get( 'accessToken' ) );
 				};
 
-				return this.sync( 'create', this, options );
+				if ( options.signup ) {
+					this.sync( 'create', this, options );
+				} else {
+					this.sync( 'read', this, options );
+				}
 			} else {
 				this.trigger( 'error', { 'message' : 'No credentials provided' } );
 			}
@@ -105,9 +120,7 @@ define( function( require ) {
 			return Backbone.sync.apply( this, arguments );
 		},
 
-		// override to inject accessToken from options into the response
 		'parse' : function ( resp, options ) {
-			resp.accessToken = options.accessToken;
 			return resp;
 		},
 
@@ -120,7 +133,7 @@ define( function( require ) {
 				.done( options.success )
 				.fail( options.fail )
 				.always( function ( response ) {
-					self.csrfToken = response.token;
+					self.set( 'csrfToken', response._csrf );
 				} );
 		},
 

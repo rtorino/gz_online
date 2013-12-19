@@ -25,13 +25,12 @@ module.exports = {
 			} ) );
 
 			app.use( config.rest, baucis() );
-
 			agent = request.agent( app );
-		} catch ( error ) {
-			fn( error );
-		}
 
-		fn( null, agent );
+			fn( null, agent );
+		} catch ( error ) {
+			fn( error, null );
+		}
 	},
 
 	deinit: function( module, fn ) {
