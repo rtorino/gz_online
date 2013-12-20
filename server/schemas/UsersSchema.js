@@ -5,6 +5,7 @@ var uuid     = require( 'node-uuid' );
 var crypto   = require( 'crypto' );
 var check    = require( 'validator' ).check;
 var sanitize = require( 'validator' ).sanitize;
+var Schema = mongoose.Schema;
 
 var UserSchema = new mongoose.Schema( {
 	'email': {
@@ -20,7 +21,7 @@ var UserSchema = new mongoose.Schema( {
 	},
 	'fName'            : String,
 	'lName'            : String,
-	// skills          : [ Skill.schema ],
+	'skills'           : Array,
 	'role'             : String,
 	'verified'         : Number,
 	'salt'             : String,

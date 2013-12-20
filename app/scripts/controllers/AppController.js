@@ -9,15 +9,15 @@ define( function( require ) {
 	var Reqres  = require( 'RequestResponse' );
 
 	var views = {
-		'SignupLayout': require( 'views/layout/SignupLayout' ),
-		'ErrorView': require( 'views/ErrorView' ),
-		'NavLayout': require( 'views/layout/NavLayout' ),
-		'LoginLayout': require( 'views/layout/LoginLayout' )
+		'SignupLayout' : require( 'views/layout/SignupLayout' ),
+		'ErrorView'    : require( 'views/ErrorView' ),
+		'NavLayout'    : require( 'views/layout/NavLayout' ),
+		'LoginLayout'  : require( 'views/layout/LoginLayout' )
 	};
 
 	var applications = {
-		'SystemApp': require( 'System' ),
-		'UserApp': require( 'User' )
+		'SystemApp' : require( 'System' ),
+		'UserApp'   : require( 'User' )
 	};
 
 	return Marionette.Controller.extend( {
@@ -27,7 +27,7 @@ define( function( require ) {
 			this.Vent = this.options.Vent;
 			_.bindAll( this );
 
-			this.Vent.on( 'App:start', this.showLogin );
+			return this;
 		},
 
 		showLogin: function( event ) {

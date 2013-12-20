@@ -32,9 +32,12 @@ define( function( require ) {
 
 	// start history
 	App.on( 'initialize:after', function() {
-		Backbone.history.start( {
-			'pushState' : false
-		} );
+
+		if ( Backbone.History.started === true ) {
+			Backbone.history.stop();
+		}
+
+		Backbone.history.start();
 	} );
 
 	return App;

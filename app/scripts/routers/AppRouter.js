@@ -9,7 +9,8 @@ define( function( require ) {
 			'system*actions' : 'bootstrapSystemApp',
 			'user*actions'   : 'bootstrapUserApp',
 			'login'          : 'showLogin',
-			'signup'         : 'showSignup'
+			'signup'         : 'showSignup',
+			''               : 'showLogin'
 		}
 	} );
 

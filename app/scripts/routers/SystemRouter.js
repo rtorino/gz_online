@@ -8,7 +8,7 @@ define( function ( require ) {
 			'system/users'     : 'showUsers',
 			'system/assessors' : 'showAssessors',
 			'system/skills'    : 'showSkills',
-			'system*action'    : 'showUsers'
+			'system*actions'   : 'showDefault'
 		}
 	} );
 

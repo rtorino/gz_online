@@ -4,8 +4,8 @@
 			<img src="http://placehold.it/24x24" class="img-thumbnail img-responsive" alt="Responsive image">&nbsp;<%= fName %> <%= lName %>
 		</a>
 		<div class="pull-right">
-			<a href="#" class="btn btn-warning btn-sm" id="kickBtn"><i class="glyphicon glyphicon-warning-sign"></i></a>
-			<a href="#" class="btn btn-primary btn-sm" id="deleteBtn"><i class="glyphicon glyphicon-trash"></i></a>
+			<button class="btn btn-warning btn-sm" id="kickBtn"><i class="glyphicon glyphicon-warning-sign"></i></button>
+			<button class="btn btn-primary btn-sm" id="deleteBtn"><i class="glyphicon glyphicon-trash"></i></button>
 		</div>
 	</h4>
 	<div class="clearfix"></div>
@@ -25,18 +25,19 @@
 						</tr>
 					</thead>
 					<tbody>
+							<% _.each(skills,function(skill){ %>
 						<tr>
-							<td>HTML</td>
-							<td><i class="glyphicon glyphicon-thumbs-up"></i></td>
+							<td><%= skill.name%></td>
+							<td>
+								<% if(skill.openstatus == 1){ %>
+								   <i class="glyphicon glyphicon-thumbs-up"></i>
+								<% } else { %>
+								   <i class="glyphicon glyphicon-thumbs-down">
+								<% }%>
+							</td>
+
 						</tr>
-						<tr>
-							<td>CSS</td>
-							<td><i class="glyphicon glyphicon-thumbs-down"></i></td>
-						</tr>
-						<tr>
-							<td>JavaScript</td>
-							<td><i class="glyphicon glyphicon-thumbs-down"></i></td>
-						</tr>
+						<%});%>
 					</tbody>
 				</table>
 			</div>
